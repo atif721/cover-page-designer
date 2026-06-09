@@ -26,11 +26,13 @@ interface Props {
   semester: string;
   batch: string;
   teachers: Teacher[];
+  projectTitle?: string;
 }
 
 interface PreviewCardProps extends Props {
   studentName: string;
   studentId: string;
+  projectTitle: string;
 }
 
 // One card = one A4 page. Defined as a normal function (not a hook) so it
@@ -49,6 +51,7 @@ function PreviewCard({
   semester,
   batch,
   teachers,
+  projectTitle = "",
 }: PreviewCardProps) {
   return (
     <div
@@ -92,11 +95,20 @@ function PreviewCard({
           </div>
         </div>
 
-        {/* Experiment/Report/Project Name Box — hidden when nameLabel is empty (e.g. Assignment) */}
-        {nameLabel && (
+        {/* Experiment/Report/Project Name Box — hidden when nameLabel is empty (e.g. Assignment).
+            Hidden for Project type too — per-student project title renders below. */}
+        {nameLabel && type !== "Project" && (
           <div className="border-2 border-black rounded-2xl mb-10 min-h-32 text-center flex flex-col justify-center">
             <p className="text-lg mt-2">{nameLabel}:</p>
             <p className="text-lg font-bold capitalize">{reportName}</p>
+          </div>
+        )}
+
+        {/* Per-student Project Title — only for Project type */}
+        {type === "Project" && (
+          <div className="border-2 border-black rounded-2xl mb-10 min-h-32 text-center flex flex-col justify-center">
+            <p className="text-lg mt-2">Project Title:</p>
+            <p className="text-lg font-bold capitalize">{projectTitle || "—"}</p>
           </div>
         )}
 
@@ -172,9 +184,12 @@ function PreviewCard({
   );
 }
 
-function parseStudent(raw: string): { name: string; id: string } {
-  const [namePart = "", idPart = ""] = raw.split(",").map((s) => s.trim());
-  return { name: namePart, id: idPart };
+function parseStudent(raw: string): { name: string; id: string; projectTitle: string } {
+  // Format: "Name, ID[, Project is about...]"
+  // Split into at most 3 parts so a project title with commas survives intact.
+  const parts = raw.split(",").map((s) => s.trim());
+  const [namePart = "", idPart = "", ...rest] = parts;
+  return { name: namePart, id: idPart, projectTitle: rest.join(", ") };
 }
 
 const PDFPreview = ({
@@ -194,27 +209,33 @@ const PDFPreview = ({
   const parsed = students.map((s) => ({ ...parseStudent(s.raw), raw: s.raw }));
 
   return (
-    <div className="flex-1 flex flex-col items-center gap-6 p-10 overflow-auto bg-gray-200">
+    <div className="flex-1 flex flex-col items-center gap-6 p-2 sm:p-6 md:p-10 overflow-auto bg-gray-200">
       {parsed.map((s, i) => (
-        <div key={i} className="relative">
+        <div key={i} className="relative origin-top">
           <span className="absolute -top-5 left-2 text-xs font-semibold text-gray-600">
             Page {i + 1} of {parsed.length}
           </span>
-          <PreviewCard
-            type={type}
-            nameLabel={nameLabel}
-            reportName={reportName}
-            reportNo={reportNo}
-            courseCode={courseCode}
-            courseTitle={courseTitle}
-            submissionDate={submissionDate}
-            studentName={s.name}
-            studentId={s.id}
-            section={section}
-            semester={semester}
-            batch={batch}
-            teachers={teachers}
-          />
+          {/* Scale A4 down on small screens so the whole page is visible. */}
+          <div
+            className="a4-scale"
+            style={{ "--a4-scale": 1 } as React.CSSProperties}>
+            <PreviewCard
+              type={type}
+              nameLabel={nameLabel}
+              reportName={reportName}
+              reportNo={reportNo}
+              courseCode={courseCode}
+              courseTitle={courseTitle}
+              submissionDate={submissionDate}
+              studentName={s.name}
+              studentId={s.id}
+              section={section}
+              semester={semester}
+              batch={batch}
+              teachers={teachers}
+              projectTitle={s.projectTitle}
+            />
+          </div>
         </div>
       ))}
     </div>

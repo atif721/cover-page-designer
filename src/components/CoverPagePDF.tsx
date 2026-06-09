@@ -3,26 +3,26 @@ import deptLogo from "@/assets/dept.png";
 import versityLogo from "@/assets/versity.png";
 
 const s = StyleSheet.create({
-  page: { padding: 24, fontFamily: "Times-Roman" },
+  page: { padding: 30, fontFamily: "Times-Roman" },
   outerBorder: {
-    border: "3pt solid black",
+    border: "2pt solid black",
     borderRadius: 12,
     flex: 1,
-    padding: 12,
+    padding: 6,
     position: "relative",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 16,
+    marginBottom: 5,
   },
   logo: { width: 72, height: 72, objectFit: "contain" },
   headerCenter: { flex: 1, alignItems: "center", paddingHorizontal: 12 },
   uniName: { fontSize: 20, fontFamily: "Times-Bold", marginBottom: 4 },
   deptName: { fontSize: 13, fontFamily: "Times-Bold" },
   centeredBox: {
-    border: "2pt solid black",
+    border: "1.5pt solid black",
     borderRadius: 12,
     paddingVertical: 6,
     paddingHorizontal: 28,
@@ -31,48 +31,49 @@ const s = StyleSheet.create({
   },
   boxText: { fontSize: 13, fontFamily: "Times-Bold" },
   detailBox: {
-    border: "2pt solid black",
+    border: "1.5pt solid black",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
   },
   row: { flexDirection: "row", marginBottom: 6, fontSize: 12 },
+  row2: { flexDirection: "row", marginBottom: 16, fontSize: 12 },
   labelWide: { width: 110, fontSize: 12 },
   labelNarrow: { width: 60, fontSize: 12 },
   colon: { marginHorizontal: 4, fontSize: 12 },
   value: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "uppercase", flex: 1 },
   valuePlain: { fontSize: 12, fontFamily: "Times-Bold", flex: 1 },
   experimentBox: {
-    border: "2pt solid black",
+    border: "1.5pt solid black",
     borderRadius: 12,
     marginBottom: 24,
     minHeight: 90,
     padding: 10,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   experimentLabel: { fontSize: 12, marginBottom: 4 },
   experimentName: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "capitalize" },
   splitBox: {
-    border: "2pt solid black",
+    border: "1.5pt solid black",
     borderRadius: 12,
     flexDirection: "row",
     marginBottom: 24,
-    height: 240,
+    height: 200,
     position: "relative",
   },
   splitDivider: {
     position: "absolute",
-    top: 20,
-    left: 0,
-    right: 0,
+    top: 25,
+    left: -16,
+    right: -16,
     height: 1.5,
     backgroundColor: "black",
     marginHorizontal: 16,
   },
   splitLeft: {
     width: "50%",
-    borderRight: "2pt solid black",
+    borderRight: "1.5pt solid black",
     padding: 8,
     paddingRight: 4,
   },
@@ -81,10 +82,10 @@ const s = StyleSheet.create({
     fontSize: 13,
     fontFamily: "Times-Bold",
     textAlign: "center",
-    marginBottom: 14,
+    marginBottom: 25,
   },
-  teacherBlock: { marginBottom: 10 },
-  teacherName: { fontSize: 11, fontFamily: "Times-Bold", textTransform: "uppercase", flex: 1 },
+  teacherBlock: { marginBottom: 20 },
+  teacherName: { fontSize: 11, fontFamily: "Times-Bold", textTransform: "capitalize", flex: 1 },
   teacherDesignation: { fontSize: 11, fontFamily: "Times-Bold", flex: 1 },
   signature: {
     position: "absolute",
@@ -93,7 +94,7 @@ const s = StyleSheet.create({
     alignItems: "center",
   },
   signatureLine: {
-    borderTop: "2pt solid black",
+    borderTop: "1.5pt solid black",
     width: 180,
     paddingTop: 6,
   },
@@ -120,6 +121,7 @@ interface Props {
   semester: string;
   batch: string;
   teachers: Teacher[];
+  projectTitle?: string;
 }
 
 // A single cover-page sheet. Renders ONLY a <Page> — no <Document> wrapper.
@@ -141,6 +143,7 @@ export function CoverPage(props: Props) {
     semester,
     batch,
     teachers,
+    projectTitle = "",
   } = props;
 
   return (
@@ -178,11 +181,20 @@ export function CoverPage(props: Props) {
           ))}
         </View>
 
-        {/* Experiment / Report / Project Name — hidden when nameLabel is empty (e.g. Assignment) */}
-        {nameLabel && (
+        {/* Experiment / Report / Project Name — hidden when nameLabel is empty (e.g. Assignment).
+            For Project type, nameLabel is hidden too because each student has a per-student project title. */}
+        {nameLabel && type !== "Project" && (
           <View style={s.experimentBox}>
             <Text style={s.experimentLabel}>{nameLabel}:</Text>
             <Text style={s.experimentName}>{reportName}</Text>
+          </View>
+        )}
+
+        {/* Per-student Project Title — only for Project type */}
+        {type === "Project" && (
+          <View style={s.experimentBox}>
+            <Text style={s.experimentLabel}>Project Title:</Text>
+            <Text style={s.experimentName}>{projectTitle || "—"}</Text>
           </View>
         )}
 
@@ -199,7 +211,7 @@ export function CoverPage(props: Props) {
               ["Semester", semester, false],
               ["Batch", batch, true],
             ].map(([label, val, upper]) => (
-              <View style={s.row} key={label as string}>
+              <View style={s.row2} key={label as string}>
                 <Text style={s.labelNarrow}>{label as string}</Text>
                 <Text style={s.colon}>:</Text>
                 <Text style={upper ? s.value : s.valuePlain}>{val as string}</Text>
@@ -214,7 +226,7 @@ export function CoverPage(props: Props) {
               <View key={i} style={s.teacherBlock}>
                 <View style={s.row}>
                   <Text style={{ width: 18, fontSize: 11 }}>{i + 1}.</Text>
-                  <Text style={{ width: 50, fontSize: 11 }}>Name</Text>
+                  <Text style={{ width: 55, fontSize: 11, paddingRight: 5 }}>Name</Text>
                   <Text style={s.colon}>:</Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>

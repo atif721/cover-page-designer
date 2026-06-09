@@ -12,7 +12,7 @@ body {
   min-height: 100vh;
 }
 
-/* A4 Page styling for the preview */
+/* A4 Page styling for the preview (native size — PDF matches this exactly) */
 .a4-page {
   width: 210mm;
   height: 297mm;
@@ -23,4 +23,25 @@ body {
   box-sizing: border-box;
   position: relative;
 }
- 
+
+/* Wrapper that scales the A4 page down on small screens so the whole page
+   fits inside the viewport. On md+ screens, scale = 1 (full size). */
+.a4-scale {
+  transform: scale(var(--a4-scale, 1));
+  transform-origin: top center;
+}
+
+@media (max-width: 767px) {
+  /* Phone: 375px wide minus 16px padding ≈ 359px usable. A4 is 210mm ≈ 794px
+     at 96dpi, so scale = 359/794 ≈ 0.45 to fit width. */
+  .a4-scale {
+    --a4-scale: 0.45;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet: preview pane is ~2/3 of 768px ≈ 512px. 512/794 ≈ 0.64. */
+  .a4-scale {
+    --a4-scale: 0.6;
+  }
+}

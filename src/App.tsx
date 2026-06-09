@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { pdf, Document } from "@react-pdf/renderer";
 import { CoverPage, type NameLabel } from "@/components/CoverPagePDF";
 
 import "./App.css";
 import PDFPreview from "@/components/PDFPreview";
 
-type ReportType = "Lab Report" | "Assignment" | "Project";
+type ReportType = "Lab Report" | "Assignment" | "Project" | "Experiment";
 
 interface Teacher {
   name: string;
@@ -16,33 +16,122 @@ interface Student {
   raw: string;
 }
 
-function parseStudent(raw: string): { name: string; id: string } {
-  const [namePart = "", idPart = ""] = raw.split(",").map((s) => s.trim());
-  return { name: namePart, id: idPart };
+const STORAGE_KEY = "coverPageDesigner:v1";
+
+// Per-type label for the shared "name" box (hidden for Assignment).
+// Project gets an empty label here because each student supplies a per-student
+// project title in their own input row.
+const NAME_LABEL_FOR_TYPE: Record<ReportType, NameLabel> = {
+  Experiment: "Experiment Name",
+  "Lab Report": "Report Title",
+  Project: "Project Title",
+  Assignment: "",
+};
+
+interface PersistedState {
+  type: ReportType;
+  reportName: string;
+  reportNo: string;
+  courseCode: string;
+  courseTitle: string;
+  submissionDate: string;
+  students: Student[];
+  section: string;
+  semester: string;
+  batch: string;
+  teachers: Teacher[];
+}
+
+function parseStudent(
+  raw: string,
+  isProject: boolean,
+): { name: string; id: string; projectTitle: string } {
+  // Format: "Name, ID[, Project is about...]"
+  // Split into at most 3 parts so a project title with commas survives intact.
+  const parts = raw.split(",").map((s) => s.trim());
+  const [namePart = "", idPart = "", ...rest] = parts;
+  return {
+    name: namePart,
+    id: idPart,
+    projectTitle: isProject ? rest.join(", ") : "",
+  };
+}
+
+function loadState(): PersistedState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as PersistedState;
+    // Light validation — bail if shape is wrong
+    if (!parsed || !Array.isArray(parsed.students) || !Array.isArray(parsed.teachers)) {
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
 }
 
 function App() {
-  const [type, setType] = useState<ReportType>("Lab Report");
-  const [nameLabel, setNameLabel] = useState<NameLabel>("Experiment Name");
-  const [reportName, setReportName] = useState("");
-  const [reportNo, setReportNo] = useState("");
-  const [courseCode, setCourseCode] = useState("");
-  const [courseTitle, setCourseTitle] = useState("");
-  const [submissionDate, setSubmissionDate] = useState("");
-  const [students, setStudents] = useState<Student[]>([{ raw: "" }]);
-  const [section, setSection] = useState("");
-  const [semester, setSemester] = useState("");
-  const [batch, setBatch] = useState("");
-  const [teachers, setTeachers] = useState<Teacher[]>([{ name: "", designation: "" }]);
+  const persisted = loadState();
+
+  const [type, setType] = useState<ReportType>(persisted?.type ?? "Lab Report");
+  const [reportName, setReportName] = useState(persisted?.reportName ?? "");
+  const [reportNo, setReportNo] = useState(persisted?.reportNo ?? "");
+  const [courseCode, setCourseCode] = useState(persisted?.courseCode ?? "");
+  const [courseTitle, setCourseTitle] = useState(persisted?.courseTitle ?? "");
+  const [submissionDate, setSubmissionDate] = useState(persisted?.submissionDate ?? "");
+  const [students, setStudents] = useState<Student[]>(persisted?.students ?? [{ raw: "" }]);
+  const [section, setSection] = useState(persisted?.section ?? "");
+  const [semester, setSemester] = useState(persisted?.semester ?? "");
+  const [batch, setBatch] = useState(persisted?.batch ?? "");
+  const [teachers, setTeachers] = useState<Teacher[]>(
+    persisted?.teachers ?? [{ name: "", designation: "" }],
+  );
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"form" | "preview">("form");
 
-  // Type changes also reset the name-box label to a valid default for that type.
+  // Derived: which label to show in the shared name box (or hide for Assignment).
+  const nameLabel: NameLabel = NAME_LABEL_FOR_TYPE[type];
+
+  // Persist to localStorage on any change.
+  useEffect(() => {
+    const state: PersistedState = {
+      type,
+      reportName,
+      reportNo,
+      courseCode,
+      courseTitle,
+      submissionDate,
+      students,
+      section,
+      semester,
+      batch,
+      teachers,
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // quota / private-mode — silently ignore
+    }
+  }, [
+    type,
+    reportName,
+    reportNo,
+    courseCode,
+    courseTitle,
+    submissionDate,
+    students,
+    section,
+    semester,
+    batch,
+    teachers,
+  ]);
+
   const handleTypeChange = (next: ReportType) => {
     setType(next);
-    if (next === "Lab Report") setNameLabel("Experiment Name");
-    else if (next === "Project") setNameLabel("Project Title");
-    else setNameLabel(""); // Assignment — name box is hidden
+    // No nameLabel state to update — it's derived from `type` now.
   };
 
   const addStudent = () => {
@@ -77,10 +166,27 @@ function App() {
     }
   };
 
+  const handleReset = () => {
+    if (!confirm("Clear all form data?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    setType("Lab Report");
+    setReportName("");
+    setReportNo("");
+    setCourseCode("");
+    setCourseTitle("");
+    setSubmissionDate("");
+    setStudents([{ raw: "" }]);
+    setSection("");
+    setSemester("");
+    setBatch("");
+    setTeachers([{ name: "", designation: "" }]);
+  };
+
   const generatePDF = async () => {
     if (pdfUrl) URL.revokeObjectURL(pdfUrl);
 
-    const parsedStudents = students.map((s) => parseStudent(s.raw));
+    const isProject = type === "Project";
+    const parsedStudents = students.map((s) => parseStudent(s.raw, isProject));
 
     const blob = await pdf(
       <Document>
@@ -100,6 +206,7 @@ function App() {
             semester={semester}
             batch={batch}
             teachers={teachers}
+            projectTitle={s.projectTitle}
           />
         ))}
       </Document>,
@@ -112,7 +219,7 @@ function App() {
 
   const downloadPDF = () => {
     if (!pdfUrl) return;
-    const firstName = parseStudent(students[0]?.raw ?? "").name || "CoverPage";
+    const firstName = parseStudent(students[0]?.raw ?? "", type === "Project").name || "CoverPage";
     const safeName = firstName.replace(/\s+/g, "_");
     const a = document.createElement("a");
     a.href = pdfUrl;
@@ -122,21 +229,63 @@ function App() {
     document.body.removeChild(a);
   };
 
+  const isProject = type === "Project";
+  const reportPlaceholder = isProject
+    ? "e.g. (leave empty — set per student)"
+    : type === "Experiment"
+      ? "e.g. Study of Sorting Algorithms"
+      : type === "Lab Report"
+        ? "e.g. Mid-term Performance Analysis"
+        : "e.g. (not used for Assignment)";
+
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+      {/* Mobile tab switcher — hidden on md+ */}
+      <div className="md:hidden flex border-b border-gray-200 bg-white">
+        <button
+          onClick={() => setActiveTab("form")}
+          className={`flex-1 py-3 text-sm font-semibold ${
+            activeTab === "form"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-500"
+          }`}>
+          Form
+        </button>
+        <button
+          onClick={() => setActiveTab("preview")}
+          className={`flex-1 py-3 text-sm font-semibold ${
+            activeTab === "preview"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-500"
+          }`}>
+          Preview
+        </button>
+      </div>
+
       {/* Left Side: Form */}
-      <div className="w-1/3 p-8 overflow-y-auto h-screen bg-white shadow-xl border-r border-gray-200">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Cover Page Generator</h1>
+      <div
+        className={`w-full md:w-1/3 p-4 md:p-8 overflow-y-auto h-screen bg-white shadow-xl md:border-r border-gray-200 ${
+          activeTab === "form" ? "block" : "hidden md:block"
+        }`}>
+        <div className="flex justify-between items-center mb-4 md:mb-6">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Cover Page Generator</h1>
+          <button
+            onClick={handleReset}
+            title="Clear all form data"
+            className="text-xs text-red-600 hover:text-red-800 px-2 py-1 border border-red-200 rounded hover:bg-red-50 transition">
+            Reset
+          </button>
+        </div>
 
         <div className="space-y-4">
           {/* Type Selection */}
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
             <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
-            <div className="flex flex-wrap gap-4">
-              {(["Lab Report", "Assignment", "Project"] as ReportType[]).map((t) => (
+            <div className="flex flex-wrap gap-2 md:gap-4">
+              {(["Lab Report", "Experiment", "Assignment", "Project"] as ReportType[]).map((t) => (
                 <label
                   key={t}
-                  className="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded border border-gray-300 hover:bg-gray-100 transition">
+                  className="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded border border-gray-300 hover:bg-gray-100 transition text-sm">
                   <input
                     type="radio"
                     name="type"
@@ -144,7 +293,7 @@ function App() {
                     onChange={() => handleTypeChange(t)}
                     className="w-4 h-4 text-blue-600"
                   />
-                  <span className="text-sm">{t}</span>
+                  <span>{t}</span>
                 </label>
               ))}
             </div>
@@ -152,7 +301,9 @@ function App() {
 
           {/* Report/Assignment/Project No */}
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <label className="block text-sm font-medium text-gray-700 mb-1">{type} No.</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {type} No.
+            </label>
             <input
               type="text"
               value={reportNo}
@@ -163,9 +314,11 @@ function App() {
           </div>
 
           {/* Course Details */}
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Course Title</label>
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Course Title
+              </label>
               <input
                 type="text"
                 value={courseTitle}
@@ -175,7 +328,9 @@ function App() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Course Code
+              </label>
               <input
                 type="text"
                 value={courseCode}
@@ -185,7 +340,9 @@ function App() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Submission Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Submission Date
+              </label>
               <input
                 type="date"
                 value={submissionDate}
@@ -195,46 +352,20 @@ function App() {
             </div>
           </div>
 
-          {/* Name box — hidden entirely for Assignment */}
-          {type !== "Assignment" && (
+          {/* Shared name box — hidden for Assignment and Project.
+              For Project, each student supplies their own project title in the Students section. */}
+          {type !== "Assignment" && type !== "Project" && (
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-3">
-              {type === "Lab Report" ?
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name of the report</label>
-                  <div className="flex gap-4">
-                    {(["Experiment Name", "Report Title"] as const).map((opt) => (
-                      <label
-                        key={opt}
-                        className="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded border border-gray-300 hover:bg-gray-100 transition">
-                        <input
-                          type="radio"
-                          name="nameLabel"
-                          checked={nameLabel === opt}
-                          onChange={() => setNameLabel(opt)}
-                          className="w-4 h-4 text-blue-600"
-                        />
-                        <span className="text-sm">{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              : <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
-                </div>
-              }
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {nameLabel}
+                </label>
                 <input
                   type="text"
                   value={reportName}
                   onChange={(e) => setReportName(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
-                  placeholder={
-                    type === "Lab Report" ?
-                      nameLabel === "Experiment Name" ?
-                        "e.g. Study of Sorting Algorithms"
-                      : "e.g. Mid-term Performance Analysis"
-                    : "e.g. Smart Attendance System"
-                  }
+                  placeholder={reportPlaceholder}
                 />
               </div>
             </div>
@@ -251,44 +382,57 @@ function App() {
               </button>
             </div>
             <div className="space-y-3">
-              {students.map((student, index) => (
-                <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
-                  <button
-                    onClick={() => removeStudent(index)}
-                    disabled={students.length === 1}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs disabled:opacity-30 disabled:cursor-not-allowed opacity-0 group-hover:opacity-100 transition">
-                    ×
-                  </button>
-                  <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-                    Student {index + 1} — Name, ID
-                  </label>
-                  <input
-                    type="text"
-                    value={student.raw}
-                    onChange={(e) => updateStudent(index, e.target.value)}
-                    className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
-                    placeholder="e.g. Abdullah Atif, 241311051"
-                  />
-                  {student.raw && (
-                    <p className="text-[11px] text-gray-500 mt-1">
-                      {(() => {
-                        const p = parseStudent(student.raw);
-                        return (
+              {students.map((student, index) => {
+                const parsed = parseStudent(student.raw, isProject);
+                return (
+                  <div
+                    key={index}
+                    className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+                    <button
+                      onClick={() => removeStudent(index)}
+                      disabled={students.length === 1}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs disabled:opacity-30 disabled:cursor-not-allowed opacity-0 group-hover:opacity-100 transition">
+                      ×
+                    </button>
+                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                      {isProject
+                        ? `Student ${index + 1} — Name, ID, Project is about...`
+                        : `Student ${index + 1} — Name, ID`}
+                    </label>
+                    <input
+                      type="text"
+                      value={student.raw}
+                      onChange={(e) => updateStudent(index, e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
+                      placeholder={
+                        isProject
+                          ? "e.g. Abdullah Atif, 241311051, Smart Attendance System"
+                          : "e.g. Abdullah Atif, 241311051"
+                      }
+                    />
+                    {student.raw && (
+                      <p className="text-[11px] text-gray-500 mt-1">
+                        <span className="font-semibold">Name:</span> {parsed.name || "—"} ·{" "}
+                        <span className="font-semibold">ID:</span> {parsed.id || "—"}
+                        {isProject && (
                           <>
-                            <span className="font-semibold">Name:</span> {p.name || "—"} ·{" "}
-                            <span className="font-semibold">ID:</span> {p.id || "—"}
+                            {" · "}
+                            <span className="font-semibold">Project:</span>{" "}
+                            {parsed.projectTitle || "—"}
                           </>
-                        );
-                      })()}
-                    </p>
-                  )}
-                </div>
-              ))}
+                        )}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Section</label>
+                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                  Section
+                </label>
                 <input
                   type="text"
                   value={section}
@@ -297,7 +441,9 @@ function App() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Semester</label>
+                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                  Semester
+                </label>
                 <input
                   type="text"
                   value={semester}
@@ -307,7 +453,9 @@ function App() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Batch</label>
+                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                  Batch
+                </label>
                 <input
                   type="text"
                   value={batch}
@@ -331,16 +479,20 @@ function App() {
             </div>
             <div className="space-y-4">
               {teachers.map((teacher, index) => (
-                <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+                <div
+                  key={index}
+                  className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
                   <button
                     onClick={() => removeTeacher(index)}
                     disabled={teachers.length === 1}
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs disabled:opacity-30 disabled:cursor-not-allowed opacity-0 group-hover:opacity-100 transition">
                     ×
                   </button>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Name</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                        Name
+                      </label>
                       <input
                         type="text"
                         value={teacher.name}
@@ -349,7 +501,9 @@ function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Designation</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
+                        Designation
+                      </label>
                       <input
                         type="text"
                         value={teacher.designation}
@@ -363,38 +517,43 @@ function App() {
             </div>
           </div>
 
-          <button
-            onClick={generatePDF}
-            className="w-full py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition mt-6">
-            Generate PDF ({students.length} page{students.length === 1 ? "" : "s"})
-          </button>
-
-          {pdfUrl && (
+          <div className="space-y-2 mt-6">
             <button
-              onClick={downloadPDF}
-              className="w-full flex-1 py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 transition shadow-lg">
-              ⬇ Download
+              onClick={generatePDF}
+              className="w-full py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition">
+              Generate PDF ({students.length} page{students.length === 1 ? "" : "s"})
             </button>
-          )}
+
+            {pdfUrl && (
+              <button
+                onClick={downloadPDF}
+                className="w-full py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 transition shadow-lg">
+                ⬇ Download
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      <PDFPreview
-        type={type}
-        nameLabel={nameLabel}
-        reportName={reportName}
-        reportNo={reportNo}
-        courseCode={courseCode}
-        courseTitle={courseTitle}
-        submissionDate={submissionDate}
-        studentName=""
-        studentId=""
-        section={section}
-        semester={semester}
-        batch={batch}
-        teachers={teachers}
-        students={students}
-      />
+      <div
+        className={`flex-1 ${activeTab === "preview" ? "block" : "hidden md:block"}`}>
+        <PDFPreview
+          type={type}
+          nameLabel={nameLabel}
+          reportName={reportName}
+          reportNo={reportNo}
+          courseCode={courseCode}
+          courseTitle={courseTitle}
+          submissionDate={submissionDate}
+          studentName=""
+          studentId=""
+          section={section}
+          semester={semester}
+          batch={batch}
+          teachers={teachers}
+          students={students}
+        />
+      </div>
     </div>
   );
 }
