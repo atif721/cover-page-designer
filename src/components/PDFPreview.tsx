@@ -54,10 +54,7 @@ function PreviewCard({
   projectTitle = "",
 }: PreviewCardProps) {
   return (
-    <div
-      className="a4-page text-black font-serif bg-white shadow"
-      style={{ width: "210mm", height: "297mm" }}
-    >
+    <div className="a4-page text-black font-serif bg-white shadow" style={{ width: "210mm", height: "297mm" }}>
       <div className="border-3 border-black rounded-2xl h-full w-full p-3 box-border relative">
         {/* Header Section */}
         <div className="flex justify-between items-start mb-4">
@@ -86,7 +83,7 @@ function PreviewCard({
           <div className="flex">
             <span className="w-40 font-medium">Course Title</span>
             <span className="mx-2">:</span>
-            <span className="font-bold uppercase">{courseTitle}</span>
+            <span className="font-bold capitalize">{courseTitle}</span>
           </div>
           <div className="flex">
             <span className="w-40 font-medium">Submission Date</span>
@@ -98,7 +95,7 @@ function PreviewCard({
         {/* Experiment/Report/Project Name Box — hidden when nameLabel is empty (e.g. Assignment).
             Hidden for Project type too — per-student project title renders below. */}
         {nameLabel && type !== "Project" && (
-          <div className="border-2 border-black rounded-2xl mb-10 min-h-32 text-center flex flex-col justify-center">
+          <div className="border-2 border-black rounded-2xl mb-10 min-h-32 text-center flex flex-col justify-self-center">
             <p className="text-lg mt-2">{nameLabel}:</p>
             <p className="text-lg font-bold capitalize">{reportName}</p>
           </div>
@@ -114,10 +111,7 @@ function PreviewCard({
 
         {/* Submitted By / To Box */}
         <div className="relative border-2 border-black rounded-2xl flex h-75 mb-10">
-          <div
-            className="absolute top-5"
-            style={{ height: 2, background: "#000", width: "100%", margin: "16px 0" }}
-          />
+          <div className="absolute top-5" style={{ height: 2, background: "#000", width: "100%", margin: "16px 0" }} />
           {/* Submitted By */}
           <div className="w-100 border-r-2 border-black p-2 pr-0">
             <h3 className="text-center text-xl font-bold mb-6">Submitted By</h3>
@@ -125,7 +119,7 @@ function PreviewCard({
               <div className="flex">
                 <span className="w-20">Name</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold uppercase">{studentName}</span>
+                <span className="font-bold capitalize">{studentName}</span>
               </div>
               <div className="flex">
                 <span className="w-20">Student ID</span>
@@ -145,7 +139,7 @@ function PreviewCard({
               <div className="flex">
                 <span className="w-20">Batch</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold uppercase">{batch}</span>
+                <span className="font-bold">{batch}</span>
               </div>
             </div>
           </div>
@@ -160,7 +154,7 @@ function PreviewCard({
                     <span className="w-7">{index + 1}.</span>
                     <span className="w-21">Name</span>
                     <span className="mx-2">:</span>
-                    <span className="font-bold uppercase">{teacher.name}</span>
+                    <span className="font-bold capitalize">{teacher.name}</span>
                   </div>
                   <div className="flex">
                     <span className="w-3"></span>
@@ -216,9 +210,7 @@ const PDFPreview = ({
             Page {i + 1} of {parsed.length}
           </span>
           {/* Scale A4 down on small screens so the whole page is visible. */}
-          <div
-            className="a4-scale"
-            style={{ "--a4-scale": 1 } as React.CSSProperties}>
+          <div className="a4-scale" style={{ "--a4-scale": 1 } as React.CSSProperties}>
             <PreviewCard
               type={type}
               nameLabel={nameLabel}

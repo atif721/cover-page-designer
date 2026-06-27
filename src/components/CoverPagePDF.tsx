@@ -41,7 +41,7 @@ const s = StyleSheet.create({
   labelWide: { width: 110, fontSize: 12 },
   labelNarrow: { width: 60, fontSize: 12 },
   colon: { marginHorizontal: 4, fontSize: 12 },
-  value: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "uppercase", flex: 1 },
+  value: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "capitalize", flex: 1 },
   valuePlain: { fontSize: 12, fontFamily: "Times-Bold", flex: 1 },
   experimentBox: {
     border: "1.5pt solid black",
