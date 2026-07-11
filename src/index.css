@@ -25,23 +25,33 @@ body {
 }
 
 /* Wrapper that scales the A4 page down on small screens so the whole page
-   fits inside the viewport. On md+ screens, scale = 1 (full size). */
+   fits inside the viewport. On md+ screens, scale is reduced to shrink the
+   preview so the form section can claim more horizontal space. */
 .a4-scale {
   transform: scale(var(--a4-scale, 1));
-  transform-origin: top center;
+  transform-origin: top left;
 }
 
 @media (max-width: 767px) {
-  /* Phone: 375px wide minus 16px padding ≈ 359px usable. A4 is 210mm ≈ 794px
-     at 96dpi, so scale = 359/794 ≈ 0.45 to fit width. */
+  /* Phone: keep A4 at native size; the wrapper scrolls so the user can
+     pan the full page on both axes. */
   .a4-scale {
-    --a4-scale: 0.45;
+    --a4-scale: 1;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  /* Tablet: preview pane is ~2/3 of 768px ≈ 512px. 512/794 ≈ 0.64. */
+  /* Tablet: shrink the A4 a little so a single page is at least partly
+     visible without scrolling, but still scrollable on either axis. */
   .a4-scale {
     --a4-scale: 0.6;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: shrink further so the form section can dominate the layout.
+     The wrapper still scrolls if content overflows. */
+  .a4-scale {
+    --a4-scale: 0.55;
   }
 }

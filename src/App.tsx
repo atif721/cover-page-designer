@@ -9,6 +9,7 @@ import StudentsSection from "@/components/form/StudentsSection";
 import TeachersSection from "@/components/form/TeachersSection";
 import TypeSelector from "@/components/form/TypeSelector";
 import { useCoverPageForm } from "@/hooks/useCoverPageForm";
+import { formatDateForDisplay } from "./utils/formatDate";
 
 type Tab = "form" | "preview";
 
@@ -23,7 +24,7 @@ function App() {
 
       {/* Left Side: Form */}
       <div
-        className={`w-full md:w-1/3 p-4 md:p-8 overflow-y-auto h-screen bg-white shadow-xl md:border-r border-gray-200 ${
+        className={`w-full md:w-3/5 p-4 md:p-8 overflow-y-auto h-screen bg-white shadow-xl md:border-r border-gray-200 ${
           activeTab === "form" ? "block" : "hidden md:block"
         }`}>
         <div className="flex justify-between items-center mb-4 md:mb-6">
@@ -98,7 +99,7 @@ function App() {
           reportNo={f.reportNo}
           courseCode={f.courseCode}
           courseTitle={f.courseTitle}
-          submissionDate={f.submissionDate}
+          submissionDate={formatDateForDisplay(f.submissionDate)}
           studentName=""
           studentId=""
           section={f.section}

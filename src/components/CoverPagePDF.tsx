@@ -1,6 +1,7 @@
 import { Page, View, Text, Image, StyleSheet } from "@react-pdf/renderer";
 import deptLogo from "@/assets/dept.png";
 import versityLogo from "@/assets/versity.png";
+import { formatDateForDisplay } from "@/utils/formatDate";
 
 const s = StyleSheet.create({
   page: { padding: 30, fontFamily: "Times-Roman" },
@@ -124,10 +125,6 @@ interface Props {
   projectTitle?: string;
 }
 
-// A single cover-page sheet. Renders ONLY a <Page> — no <Document> wrapper.
-// The caller (App.tsx) is responsible for wrapping one or more of these
-// in a single <Document>. Putting a <Document> inside another <Document>
-// is unsupported by @react-pdf/renderer and silently produces no output.
 export function CoverPage(props: Props) {
   const {
     type,
@@ -171,7 +168,7 @@ export function CoverPage(props: Props) {
           {[
             ["Course Code", courseCode, true],
             ["Course Title", courseTitle, true],
-            ["Submission Date", submissionDate, false],
+            ["Submission Date", formatDateForDisplay(submissionDate), false],
           ].map(([label, val, upper]) => (
             <View style={s.row} key={label as string}>
               <Text style={s.labelWide}>{label as string}</Text>

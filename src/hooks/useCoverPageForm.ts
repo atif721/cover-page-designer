@@ -105,8 +105,6 @@ export function useCoverPageForm(): UseCoverPageForm {
     const persisted = loadInitialState();
     const urlParams = getUrlParams();
 
-    console.log(urlParams);
-
     setType(persisted.type);
     setReportName(persisted.reportName);
     setReportNo(persisted.reportNo);

@@ -35,8 +35,6 @@ interface PreviewCardProps extends Props {
   projectTitle: string;
 }
 
-// One card = one A4 page. Defined as a normal function (not a hook) so it
-// can be called inside a `.map()` to render multiple pages of preview.
 function PreviewCard({
   type,
   nameLabel,
@@ -179,8 +177,6 @@ function PreviewCard({
 }
 
 function parseStudent(raw: string): { name: string; id: string; projectTitle: string } {
-  // Format: "Name, ID[, Project is about...]"
-  // Split into at most 3 parts so a project title with commas survives intact.
   const parts = raw.split(",").map((s) => s.trim());
   const [namePart = "", idPart = "", ...rest] = parts;
   return { name: namePart, id: idPart, projectTitle: rest.join(", ") };
@@ -203,14 +199,14 @@ const PDFPreview = ({
   const parsed = students.map((s) => ({ ...parseStudent(s.raw), raw: s.raw }));
 
   return (
-    <div className="flex-1 flex flex-col items-center gap-6 p-2 sm:p-6 md:p-10 overflow-auto bg-gray-200">
-      {parsed.map((s, i) => (
-        <div key={i} className="relative origin-top">
-          <span className="absolute -top-5 left-2 text-xs font-semibold text-gray-600">
-            Page {i + 1} of {parsed.length}
-          </span>
-          {/* Scale A4 down on small screens so the whole page is visible. */}
-          <div className="a4-scale" style={{ "--a4-scale": 1 } as React.CSSProperties}>
+    <div className="flex-1 flex flex-col items-start justify-start gap-6 p-2 sm:p-6 md:p-10 overflow-auto bg-gray-200">
+      {parsed.length === 0 ?
+        <p className="text-gray-500 text-sm">Add a student to see the preview.</p>
+      : parsed.map((s, i) => (
+          <div key={i} className="relative">
+            <span className="absolute -top-5 left-2 text-xs font-semibold text-gray-600">
+              Page {i + 1} of {parsed.length}
+            </span>
             <PreviewCard
               type={type}
               nameLabel={nameLabel}
@@ -228,8 +224,8 @@ const PDFPreview = ({
               projectTitle={s.projectTitle}
             />
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   );
 };
