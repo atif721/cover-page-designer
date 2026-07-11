@@ -27,9 +27,7 @@ function App() {
           activeTab === "form" ? "block" : "hidden md:block"
         }`}>
         <div className="flex justify-between items-center mb-4 md:mb-6">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800">
-            Cover Page Generator
-          </h1>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Cover Page Generator</h1>
           <button
             onClick={f.handleReset}
             title="Clear all form data"
@@ -92,8 +90,7 @@ function App() {
         </div>
       </div>
 
-      <div
-        className={`flex-1 ${activeTab === "preview" ? "block" : "hidden md:block"}`}>
+      <div className={`flex-1 ${activeTab === "preview" ? "block" : "hidden md:block"}`}>
         <PDFPreview
           type={f.type}
           nameLabel={f.nameLabel}
