@@ -9,6 +9,18 @@ export const REPORT_TYPES: readonly ReportType[] = [
   "Project",
 ];
 
+export const DESIGNATIONS: string[] = [
+  "Head",
+  "Professor",
+  "Associate Professor",
+  "Assistant Professor",
+  "Lecturer",
+  "Senior Lecturer",
+  "Instructor",
+  "Lab Instructor",
+  "Lab Assistant",
+];
+
 export const DEFAULT_TYPE: ReportType = "Lab Report";
 
 export const INITIAL_STUDENTS: Student[] = [{ raw: "" }];
