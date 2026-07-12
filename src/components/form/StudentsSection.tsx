@@ -1,4 +1,5 @@
 import type { ParsedStudent, Student } from "@/types";
+import { BATCH } from "@/utils/batchCalculation";
 
 interface StudentsSectionProps {
   students: Student[];
@@ -43,9 +44,7 @@ function StudentsSection({
         {students.map((student, index) => {
           const parsed = parsedStudents[index];
           return (
-            <div
-              key={index}
-              className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+            <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
               <button
                 onClick={() => onRemove(index)}
                 disabled={students.length === 1}
@@ -53,9 +52,7 @@ function StudentsSection({
                 ×
               </button>
               <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-                {isProject
-                  ? `Student ${index + 1} — Name, ID, Project is about...`
-                  : `Student ${index + 1} — Name, ID`}
+                {isProject ? `Student ${index + 1} — Name, ID, Project is about...` : `Student ${index + 1} — Name, ID`}
               </label>
               <input
                 type="text"
@@ -63,9 +60,7 @@ function StudentsSection({
                 onChange={(e) => onUpdate(index, e.target.value)}
                 className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
                 placeholder={
-                  isProject
-                    ? "e.g. Abdullah Atif, 241311051, Smart Attendance System"
-                    : "e.g. Abdullah Atif, 241311051"
+                  isProject ? "e.g. Abdullah Atif, 241311051, Smart Attendance System" : "e.g. Abdullah Atif, 241311051"
                 }
               />
               {student.raw && parsed && (
@@ -75,8 +70,7 @@ function StudentsSection({
                   {isProject && (
                     <>
                       {" · "}
-                      <span className="font-semibold">Project:</span>{" "}
-                      {parsed.projectTitle || "—"}
+                      <span className="font-semibold">Project:</span> {parsed.projectTitle || "—"}
                     </>
                   )}
                 </p>
@@ -88,9 +82,7 @@ function StudentsSection({
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-            Section
-          </label>
+          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Section</label>
           <input
             type="text"
             value={section}
@@ -99,28 +91,28 @@ function StudentsSection({
           />
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-            Semester
-          </label>
+          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Semester</label>
           <input
             type="text"
             value={semester}
             onChange={(e) => setters.setSemester(e.target.value)}
             className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
-            placeholder="5th Semester"
+            placeholder="5"
           />
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-            Batch
-          </label>
-          <input
-            type="text"
+          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Batch</label>
+          <select
             value={batch}
             onChange={(e) => setters.setBatch(e.target.value)}
-            className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
-            placeholder="34th"
-          />
+            className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white">
+            <option value="">Select Batch</option>
+            {BATCH.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </div>
