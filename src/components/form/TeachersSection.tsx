@@ -1,3 +1,4 @@
+import { DESIGNATIONS } from "@/constants";
 import type { Teacher } from "@/types";
 
 interface TeachersSectionProps {
@@ -20,9 +21,7 @@ function TeachersSection({ teachers, onAdd, onUpdate, onRemove }: TeachersSectio
       </div>
       <div className="space-y-4">
         {teachers.map((teacher, index) => (
-          <div
-            key={index}
-            className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+          <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
             <button
               onClick={() => onRemove(index)}
               disabled={teachers.length === 1}
@@ -31,9 +30,7 @@ function TeachersSection({ teachers, onAdd, onUpdate, onRemove }: TeachersSectio
             </button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-                  Name
-                </label>
+                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Name</label>
                 <input
                   type="text"
                   value={teacher.name}
@@ -42,15 +39,18 @@ function TeachersSection({ teachers, onAdd, onUpdate, onRemove }: TeachersSectio
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-                  Designation
-                </label>
-                <input
-                  type="text"
+                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Designation</label>
+                <select
                   value={teacher.designation}
                   onChange={(e) => onUpdate(index, "designation", e.target.value)}
-                  className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
-                />
+                  className="w-full p-1 text-sm border border-gray-300 rounded outline-none bg-white">
+                  <option value="">Select Designation</option>
+                  {DESIGNATIONS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>

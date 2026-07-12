@@ -1,5 +1,6 @@
 import deptLogo from "@/assets/dept.png";
 import versityLogo from "@/assets/versity.png";
+import { renderWithSuffix } from "@/utils/AddSuffix";
 
 export type NameLabel = "Experiment Name" | "Report Title" | "Project Title" | "";
 
@@ -132,12 +133,12 @@ function PreviewCard({
               <div className="flex">
                 <span className="w-20">Semester</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold">{semester}</span>
+                <span className="font-bold">{renderWithSuffix(Number(semester))}</span>
               </div>
               <div className="flex">
                 <span className="w-20">Batch</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold">{batch}</span>
+                <span className="font-bold">{renderWithSuffix(Number(batch))}</span>
               </div>
             </div>
           </div>
