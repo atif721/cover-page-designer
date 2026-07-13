@@ -32,46 +32,54 @@ function CourseFields({
   return (
     <>
       {/* Report/Assignment/Project No */}
-      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-        <label className="block text-sm font-medium text-gray-700 mb-1">{type} No.</label>
+      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          {type} No.
+        </label>
         <input
           type="text"
           value={reportNo}
           onChange={(e) => setters.setReportNo(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+          className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="e.g. 01"
         />
       </div>
 
       {/* Course Details */}
-      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Course Title</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Course Title
+          </label>
           <input
             type="text"
             value={courseTitle}
             onChange={(e) => setters.setCourseTitle(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+            className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Computer Graphics Lab"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Course Code
+          </label>
           <input
             type="text"
             value={courseCode}
             onChange={(e) => setters.setCourseCode(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+            className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="CSE 3102"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Submission Date</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Submission Date
+          </label>
           <input
             type="date"
             value={submissionDate}
             onChange={(e) => setters.setSubmissionDate(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+            className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
@@ -80,14 +88,16 @@ function CourseFields({
           For Project, each student supplies their own project title
           in the Students section. */}
       {type !== "Assignment" && type !== "Project" && (
-        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-3">
+        <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{nameLabel}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              {nameLabel}
+            </label>
             <input
               type="text"
               value={reportName}
               onChange={(e) => setters.setReportName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+              className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
               placeholder={reportPlaceholder}
             />
           </div>
