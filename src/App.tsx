@@ -18,21 +18,25 @@ function App() {
   const f = useCoverPageForm();
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+    <div className="flex h-screen flex-col bg-gray-100 md:flex-row">
       {/* Mobile tab switcher — hidden on md+ */}
       <MobileTabs activeTab={activeTab} onChange={setActiveTab} />
 
       {/* Left Side: Form */}
       <div
-        className={`w-full md:w-3/5 p-4 md:p-8 overflow-y-auto h-screen bg-white shadow-xl md:border-r border-gray-200 ${
+        className={`h-screen w-full overflow-y-auto border-gray-200 bg-white p-4 shadow-xl md:w-3/5 md:border-r md:p-8 ${
           activeTab === "form" ? "block" : "hidden md:block"
-        }`}>
-        <div className="flex justify-between items-center mb-4 md:mb-6">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Cover Page Generator</h1>
+        }`}
+      >
+        <div className="mb-4 flex items-center justify-between md:mb-6">
+          <h1 className="text-xl font-bold text-gray-800 md:text-2xl">
+            Cover Page Generator
+          </h1>
           <button
             onClick={f.handleReset}
             title="Clear all form data"
-            className="text-xs text-red-600 hover:text-red-800 px-2 py-1 border border-red-200 rounded hover:bg-red-50 transition">
+            className="rounded border border-red-200 px-2 py-1 text-xs text-red-600 transition hover:bg-red-50 hover:text-red-800"
+          >
             Reset
           </button>
         </div>
@@ -91,7 +95,9 @@ function App() {
         </div>
       </div>
 
-      <div className={`flex-1 ${activeTab === "preview" ? "block" : "hidden md:block"}`}>
+      <div
+        className={`flex-1 ${activeTab === "preview" ? "block" : "hidden md:block"}`}
+      >
         <PDFPreview
           type={f.type}
           nameLabel={f.nameLabel}

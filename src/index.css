@@ -4,7 +4,10 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f3f4f6;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 #root {
@@ -17,7 +20,7 @@ body {
   width: 210mm;
   height: 297mm;
   background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: auto;
   padding: 10mm;
   box-sizing: border-box;
