@@ -31,12 +31,13 @@ function StudentsSection({
   setters,
 }: StudentsSectionProps) {
   return (
-    <div className="border-t pt-4 mt-4">
-      <div className="flex justify-between items-center mb-3">
+    <div className="mt-4 border-t pt-4">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-800">Students</h2>
         <button
           onClick={onAdd}
-          className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition">
+          className="rounded bg-blue-600 px-2 py-1 text-xs text-white transition hover:bg-blue-700"
+        >
           + Add Student
         </button>
       </div>
@@ -44,33 +45,43 @@ function StudentsSection({
         {students.map((student, index) => {
           const parsed = parsedStudents[index];
           return (
-            <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+            <div
+              key={index}
+              className="group relative rounded-md border border-gray-200 bg-gray-50 p-3"
+            >
               <button
                 onClick={() => onRemove(index)}
                 disabled={students.length === 1}
-                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs disabled:opacity-30 disabled:cursor-not-allowed opacity-0 group-hover:opacity-100 transition">
+                className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-red-500 text-xs text-white opacity-0 transition group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-30"
+              >
                 ×
               </button>
-              <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">
-                {isProject ? `Student ${index + 1} — Name, ID, Project is about...` : `Student ${index + 1} — Name, ID`}
+              <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+                {isProject
+                  ? `Student ${index + 1} — Name, ID, Project is about...`
+                  : `Student ${index + 1} — Name, ID`}
               </label>
               <input
                 type="text"
                 value={student.raw}
                 onChange={(e) => onUpdate(index, e.target.value)}
-                className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
+                className="w-full rounded border border-gray-300 bg-white p-2 text-sm outline-none"
                 placeholder={
-                  isProject ? "e.g. Abdullah Atif, 241311051, Smart Attendance System" : "e.g. Abdullah Atif, 241311051"
+                  isProject
+                    ? "e.g. Abdullah Atif, 241311051, Smart Attendance System"
+                    : "e.g. Abdullah Atif, 241311051"
                 }
               />
               {student.raw && parsed && (
-                <p className="text-[11px] text-gray-500 mt-1">
-                  <span className="font-semibold">Name:</span> {parsed.name || "—"} ·{" "}
+                <p className="mt-1 text-[11px] text-gray-500">
+                  <span className="font-semibold">Name:</span>{" "}
+                  {parsed.name || "—"} ·{" "}
                   <span className="font-semibold">ID:</span> {parsed.id || "—"}
                   {isProject && (
                     <>
                       {" · "}
-                      <span className="font-semibold">Project:</span> {parsed.projectTitle || "—"}
+                      <span className="font-semibold">Project:</span>{" "}
+                      {parsed.projectTitle || "—"}
                     </>
                   )}
                 </p>
@@ -80,32 +91,39 @@ function StudentsSection({
         })}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Section</label>
+          <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+            Section
+          </label>
           <input
             type="text"
             value={section}
             onChange={(e) => setters.setSection(e.target.value)}
-            className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
+            className="w-full rounded border border-gray-300 bg-white p-2 text-sm outline-none"
           />
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Semester</label>
+          <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+            Semester
+          </label>
           <input
             type="text"
             value={semester}
             onChange={(e) => setters.setSemester(e.target.value)}
-            className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white"
+            className="w-full rounded border border-gray-300 bg-white p-2 text-sm outline-none"
             placeholder="5"
           />
         </div>
         <div>
-          <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Batch</label>
+          <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+            Batch
+          </label>
           <select
             value={batch}
             onChange={(e) => setters.setBatch(e.target.value)}
-            className="w-full p-2 text-sm border border-gray-300 rounded outline-none bg-white">
+            className="w-full rounded border border-gray-300 bg-white p-2 text-sm outline-none"
+          >
             <option value="">Select Batch</option>
             {BATCH.map((c) => (
               <option key={c} value={c}>

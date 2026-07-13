@@ -8,19 +8,22 @@ interface TypeSelectorProps {
 
 function TypeSelector({ type, onChange }: TypeSelectorProps) {
   return (
-    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-      <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+      <label className="mb-2 block text-sm font-medium text-gray-700">
+        Type
+      </label>
       <div className="flex flex-wrap gap-2 md:gap-4">
         {REPORT_TYPES.map((t) => (
           <label
             key={t}
-            className="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded border border-gray-300 hover:bg-gray-100 transition text-sm">
+            className="flex cursor-pointer items-center gap-2 rounded border border-gray-300 bg-white px-3 py-2 text-sm transition hover:bg-gray-100"
+          >
             <input
               type="radio"
               name="type"
               checked={type === t}
               onChange={() => onChange(t)}
-              className="w-4 h-4 text-blue-600"
+              className="h-4 w-4 text-blue-600"
             />
             <span>{t}</span>
           </label>

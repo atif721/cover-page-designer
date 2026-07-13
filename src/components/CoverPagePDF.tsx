@@ -42,7 +42,12 @@ const s = StyleSheet.create({
   labelWide: { width: 110, fontSize: 12 },
   labelNarrow: { width: 60, fontSize: 12 },
   colon: { marginHorizontal: 4, fontSize: 12 },
-  value: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "capitalize", flex: 1 },
+  value: {
+    fontSize: 12,
+    fontFamily: "Times-Bold",
+    textTransform: "capitalize",
+    flex: 1,
+  },
   valuePlain: { fontSize: 12, fontFamily: "Times-Bold", flex: 1 },
   experimentBox: {
     border: "1.5pt solid black",
@@ -54,7 +59,11 @@ const s = StyleSheet.create({
     justifyContent: "flex-start",
   },
   experimentLabel: { fontSize: 12, marginBottom: 4 },
-  experimentName: { fontSize: 12, fontFamily: "Times-Bold", textTransform: "capitalize" },
+  experimentName: {
+    fontSize: 12,
+    fontFamily: "Times-Bold",
+    textTransform: "capitalize",
+  },
   splitBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -86,7 +95,12 @@ const s = StyleSheet.create({
     marginBottom: 25,
   },
   teacherBlock: { marginBottom: 20 },
-  teacherName: { fontSize: 11, fontFamily: "Times-Bold", textTransform: "capitalize", flex: 1 },
+  teacherName: {
+    fontSize: 11,
+    fontFamily: "Times-Bold",
+    textTransform: "capitalize",
+    flex: 1,
+  },
   teacherDesignation: { fontSize: 11, fontFamily: "Times-Bold", flex: 1 },
   signature: {
     position: "absolute",
@@ -102,7 +116,8 @@ const s = StyleSheet.create({
   signatureText: { fontSize: 12, textAlign: "center" },
 });
 
-export type NameLabel = "Experiment Name" | "Report Title" | "Project Title" | "";
+export type NameLabel =
+  "Experiment Name" | "Report Title" | "Project Title" | "";
 
 interface Teacher {
   name: string;
@@ -151,7 +166,9 @@ export function CoverPage(props: Props) {
           <Image style={s.logo} src={deptLogo} />
           <View style={s.headerCenter}>
             <Text style={s.uniName}>Varendra University</Text>
-            <Text style={s.deptName}>Department of Computer Science and Engineering</Text>
+            <Text style={s.deptName}>
+              Department of Computer Science and Engineering
+            </Text>
           </View>
           <Image style={s.logo} src={versityLogo} />
         </View>
@@ -173,7 +190,9 @@ export function CoverPage(props: Props) {
             <View style={s.row} key={label as string}>
               <Text style={s.labelWide}>{label as string}</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={upper ? s.value : s.valuePlain}>{val as string}</Text>
+              <Text style={upper ? s.value : s.valuePlain}>
+                {val as string}
+              </Text>
             </View>
           ))}
         </View>
@@ -211,7 +230,9 @@ export function CoverPage(props: Props) {
               <View style={s.row2} key={label as string}>
                 <Text style={s.labelNarrow}>{label as string}</Text>
                 <Text style={s.colon}>:</Text>
-                <Text style={upper ? s.value : s.valuePlain}>{val as string}</Text>
+                <Text style={upper ? s.value : s.valuePlain}>
+                  {val as string}
+                </Text>
               </View>
             ))}
           </View>
@@ -223,7 +244,9 @@ export function CoverPage(props: Props) {
               <View key={i} style={s.teacherBlock}>
                 <View style={s.row}>
                   <Text style={{ width: 18, fontSize: 11 }}>{i + 1}.</Text>
-                  <Text style={{ width: 55, fontSize: 11, paddingRight: 5 }}>Name</Text>
+                  <Text style={{ width: 55, fontSize: 11, paddingRight: 5 }}>
+                    Name
+                  </Text>
                   <Text style={s.colon}>:</Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>

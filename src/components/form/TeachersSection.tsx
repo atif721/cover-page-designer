@@ -8,42 +8,59 @@ interface TeachersSectionProps {
   onRemove: (index: number) => void;
 }
 
-function TeachersSection({ teachers, onAdd, onUpdate, onRemove }: TeachersSectionProps) {
+function TeachersSection({
+  teachers,
+  onAdd,
+  onUpdate,
+  onRemove,
+}: TeachersSectionProps) {
   return (
-    <div className="border-t pt-4 mt-4">
-      <div className="flex justify-between items-center mb-3">
+    <div className="mt-4 border-t pt-4">
+      <div className="mb-3 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-800">Submitted To</h2>
         <button
           onClick={onAdd}
-          className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition">
+          className="rounded bg-blue-600 px-2 py-1 text-xs text-white transition hover:bg-blue-700"
+        >
           + Add Teacher
         </button>
       </div>
       <div className="space-y-4">
         {teachers.map((teacher, index) => (
-          <div key={index} className="p-3 bg-gray-50 border border-gray-200 rounded-md relative group">
+          <div
+            key={index}
+            className="group relative rounded-md border border-gray-200 bg-gray-50 p-3"
+          >
             <button
               onClick={() => onRemove(index)}
               disabled={teachers.length === 1}
-              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs disabled:opacity-30 disabled:cursor-not-allowed opacity-0 group-hover:opacity-100 transition">
+              className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-red-500 text-xs text-white opacity-0 transition group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-30"
+            >
               ×
             </button>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Name</label>
+                <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+                  Name
+                </label>
                 <input
                   type="text"
                   value={teacher.name}
                   onChange={(e) => onUpdate(index, "name", e.target.value)}
-                  className="w-full p-1 text-sm border border-gray-300 rounded outline-none bg-white"
+                  className="w-full rounded border border-gray-300 bg-white p-1 text-sm outline-none"
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Designation</label>
+                <label className="mb-1 block text-[10px] font-bold text-gray-500 uppercase">
+                  Designation
+                </label>
                 <select
                   value={teacher.designation}
-                  onChange={(e) => onUpdate(index, "designation", e.target.value)}
-                  className="w-full p-1 text-sm border border-gray-300 rounded outline-none bg-white">
+                  onChange={(e) =>
+                    onUpdate(index, "designation", e.target.value)
+                  }
+                  className="w-full rounded border border-gray-300 bg-white p-1 text-sm outline-none"
+                >
                   <option value="">Select Designation</option>
                   {DESIGNATIONS.map((d) => (
                     <option key={d} value={d}>
