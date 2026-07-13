@@ -1,4 +1,7 @@
-export function getOrdinalParts(num: number): { number: number; suffix: string } {
+export function getOrdinalParts(num: number): {
+  number: number;
+  suffix: string;
+} {
   const lastTwoDigits = num % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
     return { number: num, suffix: "th" };

@@ -17,7 +17,9 @@ export interface CoverPageBlobInput {
   teachers: Teacher[];
 }
 
-export async function buildCoverPageBlob(input: CoverPageBlobInput): Promise<Blob> {
+export async function buildCoverPageBlob(
+  input: CoverPageBlobInput,
+): Promise<Blob> {
   return pdf(
     <Document>
       {input.parsedStudents.map((s, i) => (
