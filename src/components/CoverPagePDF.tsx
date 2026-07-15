@@ -3,9 +3,10 @@ import deptLogo from "@/assets/dept.png";
 import versityLogo from "@/assets/versity.png";
 import { formatDateForDisplay } from "@/utils/formatDate";
 import { renderWithSuffixPDF } from "@/utils/AddSuffix";
+import "@/utils/registerFonts";
 
 const s = StyleSheet.create({
-  page: { padding: 30, fontFamily: "Times-Roman" },
+  page: { padding: 30, fontFamily: "Roboto Condensed", fontWeight: 400 },
   outerBorder: {
     border: "2pt solid black",
     borderRadius: 12,
@@ -21,8 +22,13 @@ const s = StyleSheet.create({
   },
   logo: { width: 72, height: 72, objectFit: "contain" },
   headerCenter: { flex: 1, alignItems: "center", paddingHorizontal: 12 },
-  uniName: { fontSize: 20, fontFamily: "Times-Bold", marginBottom: 4 },
-  deptName: { fontSize: 13, fontFamily: "Times-Bold" },
+  uniName: {
+    fontSize: 20,
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
+    marginBottom: 4,
+  },
+  deptName: { fontSize: 13, fontFamily: "Roboto Condensed", fontWeight: 700 },
   centeredBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -31,7 +37,7 @@ const s = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 24,
   },
-  boxText: { fontSize: 13, fontFamily: "Times-Bold" },
+  boxText: { fontSize: 13, fontFamily: "Roboto Condensed", fontWeight: 700 },
   detailBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -45,11 +51,17 @@ const s = StyleSheet.create({
   colon: { marginHorizontal: 4, fontSize: 12 },
   value: {
     fontSize: 12,
-    fontFamily: "Times-Bold",
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
     textTransform: "capitalize",
     flex: 1,
   },
-  valuePlain: { fontSize: 12, fontFamily: "Times-Bold", flex: 1 },
+  valuePlain: {
+    fontSize: 12,
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
+    flex: 1,
+  },
   experimentBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -62,7 +74,8 @@ const s = StyleSheet.create({
   experimentLabel: { fontSize: 12, marginBottom: 4 },
   experimentName: {
     fontSize: 12,
-    fontFamily: "Times-Bold",
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
     textTransform: "capitalize",
   },
   splitBox: {
@@ -91,18 +104,25 @@ const s = StyleSheet.create({
   splitRight: { width: "50%", padding: 8, paddingLeft: 4 },
   sectionTitle: {
     fontSize: 13,
-    fontFamily: "Times-Bold",
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
     textAlign: "center",
     marginBottom: 25,
   },
   teacherBlock: { marginBottom: 20 },
   teacherName: {
     fontSize: 11,
-    fontFamily: "Times-Bold",
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
     textTransform: "capitalize",
     flex: 1,
   },
-  teacherDesignation: { fontSize: 11, fontFamily: "Times-Bold", flex: 1 },
+  teacherDesignation: {
+    fontSize: 11,
+    fontFamily: "Roboto Condensed",
+    fontWeight: 700,
+    flex: 1,
+  },
   signature: {
     position: "absolute",
     bottom: 24,
@@ -116,7 +136,6 @@ const s = StyleSheet.create({
   },
   signatureText: { fontSize: 12, textAlign: "center" },
 });
-
 export type NameLabel =
   "Experiment Name" | "Report Title" | "Project Title" | "";
 
