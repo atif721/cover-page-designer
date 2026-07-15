@@ -1,3 +1,5 @@
+import { Text } from "@react-pdf/renderer";
+
 export function getOrdinalParts(num: number): {
   number: number;
   suffix: string;
@@ -27,5 +29,22 @@ export function renderWithSuffix(num: number) {
       {number}
       <sup>{suffix}</sup>
     </>
+  );
+}
+
+export function renderWithSuffixPDF(num: number) {
+  const { number, suffix } = getOrdinalParts(num);
+  return (
+    <Text>
+      {number}
+      <Text
+        style={{
+          fontSize: 10,
+          verticalAlign: "super",
+        }}
+      >
+        {suffix}
+      </Text>
+    </Text>
   );
 }

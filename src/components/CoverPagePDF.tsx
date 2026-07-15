@@ -2,6 +2,7 @@ import { Page, View, Text, Image, StyleSheet } from "@react-pdf/renderer";
 import deptLogo from "@/assets/dept.png";
 import versityLogo from "@/assets/versity.png";
 import { formatDateForDisplay } from "@/utils/formatDate";
+import { renderWithSuffixPDF } from "@/utils/AddSuffix";
 
 const s = StyleSheet.create({
   page: { padding: 30, fontFamily: "Times-Roman" },
@@ -220,21 +221,35 @@ export function CoverPage(props: Props) {
           {/* Submitted By */}
           <View style={s.splitLeft}>
             <Text style={s.sectionTitle}>Submitted By</Text>
-            {[
-              ["Name", studentName, true],
-              ["Student ID", studentId, false],
-              ["Section", section, true],
-              ["Semester", semester, false],
-              ["Batch", batch, true],
-            ].map(([label, val, upper]) => (
-              <View style={s.row2} key={label as string}>
-                <Text style={s.labelNarrow}>{label as string}</Text>
-                <Text style={s.colon}>:</Text>
-                <Text style={upper ? s.value : s.valuePlain}>
-                  {val as string}
-                </Text>
-              </View>
-            ))}
+            <View style={s.row2}>
+              <Text style={s.labelNarrow}>Name</Text>
+              <Text style={s.colon}>:</Text>
+              <Text style={s.value}>{studentName}</Text>
+            </View>
+            <View style={s.row2}>
+              <Text style={s.labelNarrow}>Student ID</Text>
+              <Text style={s.colon}>:</Text>
+              <Text style={s.valuePlain}>{studentId}</Text>
+            </View>
+            <View style={s.row2}>
+              <Text style={s.labelNarrow}>Section</Text>
+              <Text style={s.colon}>:</Text>
+              <Text style={s.value}>{section}</Text>
+            </View>
+            <View style={s.row2}>
+              <Text style={s.labelNarrow}>Semester</Text>
+              <Text style={s.colon}>:</Text>
+              <Text style={s.valuePlain}>
+                {renderWithSuffixPDF(Number(semester))}
+              </Text>
+            </View>
+            <View style={s.row2}>
+              <Text style={s.labelNarrow}>Batch</Text>
+              <Text style={s.colon}>:</Text>
+              <Text style={s.valuePlain}>
+                {renderWithSuffixPDF(Number(batch))}
+              </Text>
+            </View>
           </View>
 
           {/* Submitted To */}
