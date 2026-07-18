@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getUrlParams, parseTeachersFromUrl } from "@/utils/urlParams";
+import { getUrlParams, parseTeachersFromUrl, sortTeachersByDesignation } from "@/utils/urlParams";
 
 import {
   DEFAULT_TYPE,
@@ -120,7 +120,8 @@ export function useCoverPageForm(): UseCoverPageForm {
     setBatch(persisted.batch);
 
     if (urlParams.teacher) {
-      setTeachers(parseTeachersFromUrl(urlParams.teacher, urlParams.designation));
+      const teachers = parseTeachersFromUrl(urlParams.teacher, urlParams.designation);
+      setTeachers(sortTeachersByDesignation(teachers));
     } else {
       setTeachers(persisted.teachers);
     }

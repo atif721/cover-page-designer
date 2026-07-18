@@ -1,4 +1,6 @@
+import { DESIGNATIONS } from "@/constants";
 import type { Teacher } from "@/types";
+
 
 export interface UrlCourseParams {
   courseCode?: string;
@@ -28,6 +30,17 @@ export function getUrlParams(): UrlCourseParams {
   if (semester) result.semester = semester;
 
   return result;
+}
+
+function getDesignationRank(designation: string): number {
+  const index = DESIGNATIONS.indexOf(designation);
+  return index === -1 ? DESIGNATIONS.length : index;
+}
+
+export function sortTeachersByDesignation(teachers: Teacher[]): Teacher[] {
+  return [...teachers].sort(
+    (a, b) => getDesignationRank(a.designation) - getDesignationRank(b.designation),
+  );
 }
 
 export function parseTeachersFromUrl(

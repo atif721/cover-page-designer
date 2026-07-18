@@ -14,9 +14,8 @@ export const DESIGNATIONS: string[] = [
   "Professor",
   "Associate Professor",
   "Assistant Professor",
-  "Lecturer",
   "Senior Lecturer",
-  "Instructor",
+  "Lecturer",
   "Lab Instructor",
   "Lab Assistant",
 ];
