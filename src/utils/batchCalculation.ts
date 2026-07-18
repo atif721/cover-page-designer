@@ -1,7 +1,8 @@
 const YEAR = 2026;
 const MONTH = 7;
 const CURRENT_BATCH = 39;
-function getCurrentBatch(): number {
+
+export function getCurrentBatch(): number {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
@@ -14,7 +15,8 @@ function getCurrentBatch(): number {
 
   return CURRENT_BATCH + batchesPassed;
 }
-function getBatches(): string[] {
+
+export function getBatches(): string[] {
   const seniorBatch = getCurrentBatch() - 9;
   const juniorBatches: string[] = [];
   for (let i = seniorBatch; i <= getCurrentBatch(); i++) {
@@ -22,4 +24,10 @@ function getBatches(): string[] {
   }
   return juniorBatches;
 }
+
+export function getBatchForSemester(semester: number): string {
+  const batch = getCurrentBatch() - (semester - 1);
+  return batch.toString();
+}
+
 export const BATCH: string[] = getBatches();

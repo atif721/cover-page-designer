@@ -20,6 +20,7 @@ import type {
 import { buildCoverPageBlob } from "@/utils/pdf";
 import { parseStudent } from "@/utils/parseStudent";
 import { loadFromStorage, saveToStorage } from "@/utils/storage";
+import { getBatchForSemester } from "@/utils/batchCalculation";
 
 function isPersistedState(value: unknown): value is PersistedState {
   if (!value || typeof value !== "object") return false;
@@ -116,8 +117,14 @@ export function useCoverPageForm(): UseCoverPageForm {
     setStudents(persisted.students);
 
     setSection(urlParams.section ?? persisted.section);
-    setSemester(urlParams.semester ?? persisted.semester);
-    setBatch(persisted.batch);
+    const finalSemester = urlParams.semester ?? persisted.semester;
+    setSemester(finalSemester);
+
+    if (urlParams.semester) {
+      setBatch(getBatchForSemester(Number(urlParams.semester)));
+    } else {
+      setBatch(persisted.batch);
+    }
 
     if (urlParams.teacher) {
       const teachers = parseTeachersFromUrl(urlParams.teacher, urlParams.designation);
@@ -157,6 +164,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     batch,
     teachers,
   ]);
+
 
   const isProject = type === "Project";
   const nameLabel: NameLabel = NAME_LABEL_FOR_TYPE[type];
