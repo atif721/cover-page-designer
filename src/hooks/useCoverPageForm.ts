@@ -120,7 +120,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     setBatch(persisted.batch);
 
     if (urlParams.teacher) {
-      setTeachers(parseTeachersFromUrl(urlParams.teacher));
+      setTeachers(parseTeachersFromUrl(urlParams.teacher, urlParams.designation));
     } else {
       setTeachers(persisted.teachers);
     }
