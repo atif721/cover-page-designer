@@ -8,7 +8,7 @@ import "@/utils/registerFonts";
 const s = StyleSheet.create({
   page: { padding: 30, fontFamily: "Roboto Condensed", fontWeight: 400 },
   outerBorder: {
-    border: "2pt solid black",
+    border: "1.5pt solid black",
     borderRadius: 12,
     flex: 1,
     padding: 6,
@@ -23,12 +23,12 @@ const s = StyleSheet.create({
   logo: { width: 72, height: 72, objectFit: "contain" },
   headerCenter: { flex: 1, alignItems: "center", paddingHorizontal: 12 },
   uniName: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     marginBottom: 4,
   },
-  deptName: { fontSize: 13, fontFamily: "Roboto Condensed", fontWeight: 700 },
+  deptName: { fontSize: 17, fontFamily: "Roboto Condensed", fontWeight: 700 },
   centeredBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -37,27 +37,37 @@ const s = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 24,
   },
-  boxText: { fontSize: 13, fontFamily: "Roboto Condensed", fontWeight: 700 },
+  boxText: { fontSize: 16, fontFamily: "Roboto Condensed", fontWeight: 700 },
   detailBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
   },
-  row: { flexDirection: "row", marginBottom: 6, fontSize: 12 },
-  row2: { flexDirection: "row", marginBottom: 16, fontSize: 12 },
-  labelWide: { width: 110, fontSize: 12 },
-  labelNarrow: { width: 60, fontSize: 12 },
-  colon: { marginHorizontal: 4, fontSize: 12 },
+  row: {
+    flexDirection: "row",
+    marginBottom: 6,
+    fontSize: 16,
+    fontFamily: "Roboto Condensed",
+  },
+  row2: {
+    flexDirection: "row",
+    marginBottom: 16,
+    fontSize: 16,
+    fontFamily: "Roboto Condensed",
+  },
+  labelWide: { width: 110, fontSize: 14 },
+  labelNarrow: { width: 60, fontSize: 14 },
+  colon: { marginHorizontal: 4, fontSize: 14 },
   value: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     textTransform: "capitalize",
     flex: 1,
   },
   valuePlain: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     flex: 1,
@@ -71,9 +81,9 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  experimentLabel: { fontSize: 12, marginBottom: 4 },
+  experimentLabel: { fontSize: 14, marginBottom: 4 },
   experimentName: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     textTransform: "capitalize",
@@ -103,7 +113,7 @@ const s = StyleSheet.create({
   },
   splitRight: { width: "50%", padding: 8, paddingLeft: 4 },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     textAlign: "center",
@@ -111,14 +121,14 @@ const s = StyleSheet.create({
   },
   teacherBlock: { marginBottom: 20 },
   teacherName: {
-    fontSize: 11,
+    fontSize: 13,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     textTransform: "capitalize",
     flex: 1,
   },
   teacherDesignation: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
     flex: 1,
@@ -277,8 +287,8 @@ export function CoverPage(props: Props) {
             {teachers.map((t, i) => (
               <View key={i} style={s.teacherBlock}>
                 <View style={s.row}>
-                  <Text style={{ width: 18, fontSize: 11 }}>{i + 1}.</Text>
-                  <Text style={{ width: 55, fontSize: 11, paddingRight: 5 }}>
+                  <Text style={{ width: 18, fontSize: 12 }}>{i + 1}.</Text>
+                  <Text style={{ width: 55, fontSize: 12, paddingRight: 5 }}>
                     Name
                   </Text>
                   <Text style={s.colon}>:</Text>
