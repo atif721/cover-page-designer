@@ -63,7 +63,7 @@ const s = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
-    textTransform: "capitalize",
+    textTransform: "uppercase",
     flex: 1,
   },
   valuePlain: {
@@ -124,7 +124,7 @@ const s = StyleSheet.create({
     fontSize: 13,
     fontFamily: "Roboto Condensed",
     fontWeight: 700,
-    textTransform: "capitalize",
+    textTransform: "uppercase",
     flex: 1,
   },
   teacherDesignation: {
