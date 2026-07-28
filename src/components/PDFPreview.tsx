@@ -142,7 +142,7 @@ function PreviewCard({
               <div className="flex">
                 <span className="w-20">Name</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold capitalize">{studentName}</span>
+                <span className="font-bold uppercase">{studentName}</span>
               </div>
               <div className="flex">
                 <span className="w-20">Student ID</span>
@@ -181,7 +181,7 @@ function PreviewCard({
                     <span className="w-7">{index + 1}.</span>
                     <span className="w-19">Name</span>
                     <span className="mr-2">:</span>
-                    <span className="font-bold capitalize">{teacher.name}</span>
+                    <span className="font-bold uppercase">{teacher.name}</span>
                   </div>
                   <div className="flex">
                     <span className="w-3"></span>
