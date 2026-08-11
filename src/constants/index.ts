@@ -29,12 +29,12 @@ export const NAME_LABEL_FOR_TYPE: Record<ReportType, NameLabel> = {
   Experiment: "Experiment Name",
   "Lab Report": "Report Title",
   Project: "Project Title",
-  Assignment: "",
+  Assignment: "Assignment Title",
 };
 
 export const REPORT_PLACEHOLDERS: Record<ReportType, string> = {
   Project: "e.g. (leave empty — set per student)",
   Experiment: "e.g. Study of Sorting Algorithms",
   "Lab Report": "e.g. Mid-term Performance Analysis",
-  Assignment: "e.g. (not used for Assignment)",
+  Assignment: "e.g. Data Structures Assignment 1",
 };

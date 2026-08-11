@@ -42,6 +42,7 @@ function loadInitialState(): PersistedState {
       semester: "",
       batch: "",
       teachers: INITIAL_TEACHERS,
+      showTitleBox: true,
     }
   );
 }
@@ -79,6 +80,9 @@ export interface UseCoverPageForm {
   setBatch: (next: string) => void;
   isProject: boolean;
   nameLabel: NameLabel;
+  rawNameLabel: NameLabel;
+  showTitleBox: boolean;
+  setShowTitleBox: (next: boolean) => void;
   reportPlaceholder: string;
   parsedStudents: ParsedStudent[];
   handleReset: () => void;
@@ -99,6 +103,7 @@ export function useCoverPageForm(): UseCoverPageForm {
   const [semester, setSemester] = useState("");
   const [batch, setBatch] = useState("");
   const [teachers, setTeachers] = useState<Teacher[]>(INITIAL_TEACHERS);
+  const [showTitleBox, setShowTitleBox] = useState(true);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const [hydrated, setHydrated] = useState(false);
@@ -133,6 +138,8 @@ export function useCoverPageForm(): UseCoverPageForm {
       setTeachers(persisted.teachers);
     }
 
+    setShowTitleBox(persisted.showTitleBox ?? true);
+
     setHydrated(true);
   }
 
@@ -149,6 +156,7 @@ export function useCoverPageForm(): UseCoverPageForm {
       semester,
       batch,
       teachers,
+      showTitleBox,
     };
     saveToStorage(STORAGE_KEY, state);
   }, [
@@ -163,11 +171,16 @@ export function useCoverPageForm(): UseCoverPageForm {
     semester,
     batch,
     teachers,
+    showTitleBox,
   ]);
 
 
   const isProject = type === "Project";
-  const nameLabel: NameLabel = NAME_LABEL_FOR_TYPE[type];
+  const rawNameLabel: NameLabel = NAME_LABEL_FOR_TYPE[type];
+  // Effective label used to actually render the title box (form + PDF).
+  // Empty string when the user has manually hidden it, so every place that
+  // already guards on `nameLabel` (PDFPreview, CoverPagePDF) hides automatically.
+  const nameLabel: NameLabel = showTitleBox ? rawNameLabel : "";
   const reportPlaceholder: string = REPORT_PLACEHOLDERS[type];
   const parsedStudents = useMemo<ParsedStudent[]>(
     () => students.map((s) => parseStudent(s.raw, isProject)),
@@ -213,6 +226,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     setSemester("");
     setBatch("");
     setTeachers(INITIAL_TEACHERS);
+    setShowTitleBox(true);
   };
 
   const generatePdf = async () => {
@@ -284,6 +298,9 @@ export function useCoverPageForm(): UseCoverPageForm {
     setBatch,
     isProject,
     nameLabel,
+    rawNameLabel,
+    showTitleBox,
+    setShowTitleBox,
     reportPlaceholder,
     parsedStudents,
     handleReset,
