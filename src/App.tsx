@@ -46,13 +46,15 @@ function App() {
 
           <CourseFields
             type={f.type}
-            nameLabel={f.nameLabel}
+            nameLabel={f.rawNameLabel}
             reportPlaceholder={f.reportPlaceholder}
             reportName={f.reportName}
             reportNo={f.reportNo}
             courseCode={f.courseCode}
             courseTitle={f.courseTitle}
             submissionDate={f.submissionDate}
+            showTitleBox={f.showTitleBox}
+            onToggleTitleBox={f.setShowTitleBox}
             setters={{
               setReportName: f.setReportName,
               setReportNo: f.setReportNo,

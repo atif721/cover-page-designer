@@ -1,6 +1,11 @@
 export type ReportType = "Lab Report" | "Assignment" | "Project" | "Experiment";
 
-export type NameLabel = "Experiment Name" | "Report Title" | "Project Title" | "";
+export type NameLabel =
+  | "Experiment Name"
+  | "Report Title"
+  | "Project Title"
+  | "Assignment Title"
+  | "";
 
 export interface Teacher {
   name: string;
@@ -29,4 +34,5 @@ export interface PersistedState {
   semester: string;
   batch: string;
   teachers: Teacher[];
+  showTitleBox: boolean;
 }
