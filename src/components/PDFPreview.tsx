@@ -3,7 +3,11 @@ import versityLogo from "@/assets/versity.png";
 import { renderWithSuffix } from "@/utils/AddSuffix";
 
 export type NameLabel =
-  "Experiment Name" | "Report Title" | "Project Title" | "";
+  | "Experiment Name"
+  | "Report Title"
+  | "Project Title"
+  | "Assignment Title"
+  | "";
 
 interface Teacher {
   name: string;
@@ -187,7 +191,11 @@ function PreviewCard({
                     <span className="w-3"></span>
                     <span className="w-23">Designation</span>
                     <span className="mr-1">:</span>
-                    <span className="font-bold">{teacher.designation}</span>
+                    <span className="font-bold">
+                      {teacher.designation}
+                      <br />
+                      Dept. of CSE, VU
+                    </span>
                   </div>
                 </div>
               ))}
