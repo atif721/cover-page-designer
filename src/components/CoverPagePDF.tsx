@@ -147,7 +147,11 @@ const s = StyleSheet.create({
   signatureText: { fontSize: 12, textAlign: "center" },
 });
 export type NameLabel =
-  "Experiment Name" | "Report Title" | "Project Title" | "";
+  | "Experiment Name"
+  | "Report Title"
+  | "Project Title"
+  | "Assignment Title"
+  | "";
 
 interface Teacher {
   name: string;
@@ -298,7 +302,20 @@ export function CoverPage(props: Props) {
                   <Text style={{ width: 18, fontSize: 11 }}> </Text>
                   <Text style={{ width: 55, fontSize: 11 }}>Designation</Text>
                   <Text style={s.colon}>:</Text>
-                  <Text style={s.teacherDesignation}>{t.designation}</Text>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontFamily: "Roboto Condensed",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {t.designation}
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: 700 }}>
+                      Dept. of CSE, VU
+                    </Text>
+                  </View>
                 </View>
               </View>
             ))}
