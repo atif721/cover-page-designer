@@ -9,6 +9,8 @@ interface CourseFieldsProps {
   courseCode: string;
   courseTitle: string;
   submissionDate: string;
+  showTitleBox: boolean;
+  onToggleTitleBox: (next: boolean) => void;
   setters: {
     setReportName: (next: string) => void;
     setReportNo: (next: string) => void;
@@ -27,8 +29,12 @@ function CourseFields({
   courseCode,
   courseTitle,
   submissionDate,
+  showTitleBox,
+  onToggleTitleBox,
   setters,
 }: CourseFieldsProps) {
+  const isProject = type === "Project";
+
   return (
     <>
       {/* Report/Assignment/Project No */}
@@ -84,11 +90,18 @@ function CourseFields({
         </div>
       </div>
 
-      {/* Shared name box — hidden for Assignment and Project.
-          For Project, each student supplies their own project title
-          in the Students section. */}
-      {type !== "Assignment" && type !== "Project" && (
-        <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+      {/* Shared name box — always hidden for Project (each student supplies
+          their own project title in the Students section). For Experiment,
+          Lab Report, and Assignment it's shown by default but removable. */}
+      {!isProject && showTitleBox && (
+        <div className="group relative space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
+          <button
+            onClick={() => onToggleTitleBox(false)}
+            className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-red-500 text-xs text-white opacity-0 transition group-hover:opacity-100"
+            title={`Remove ${nameLabel} box`}
+          >
+            ×
+          </button>
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
               {nameLabel}
@@ -102,6 +115,15 @@ function CourseFields({
             />
           </div>
         </div>
+      )}
+
+      {!isProject && !showTitleBox && (
+        <button
+          onClick={() => onToggleTitleBox(true)}
+          className="w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-3 text-sm text-gray-500 transition hover:border-blue-400 hover:text-blue-600"
+        >
+          + Add {nameLabel}
+        </button>
       )}
     </>
   );
