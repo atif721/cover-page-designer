@@ -74,6 +74,7 @@ function App() {
             onAdd={f.students.addStudent}
             onUpdate={f.students.updateStudent}
             onRemove={f.students.removeStudent}
+            onToggleHidden={f.students.toggleStudentHidden}
             setters={{
               setSection: f.setSection,
               setSemester: f.setSemester,
@@ -89,7 +90,7 @@ function App() {
           />
 
           <ActionButtons
-            studentCount={f.students.items.length}
+            studentCount={f.visibleStudentCount}
             pdfUrl={f.pdfUrl}
             onGenerate={f.generatePdf}
             onDownload={f.downloadPdf}
