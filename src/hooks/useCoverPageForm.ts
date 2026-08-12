@@ -62,6 +62,7 @@ export interface UseCoverPageForm {
     addStudent: () => void;
     updateStudent: (index: number, value: string) => void;
     removeStudent: (index: number) => void;
+    toggleStudentHidden: (index: number) => void;
   };
   teachers: {
     items: Teacher[];
@@ -85,6 +86,7 @@ export interface UseCoverPageForm {
   setShowTitleBox: (next: boolean) => void;
   reportPlaceholder: string;
   parsedStudents: ParsedStudent[];
+  visibleStudentCount: number;
   handleReset: () => void;
   generatePdf: () => Promise<void>;
   downloadPdf: () => void;
@@ -186,6 +188,12 @@ export function useCoverPageForm(): UseCoverPageForm {
     () => students.map((s) => parseStudent(s.raw, isProject)),
     [students, isProject],
   );
+  // Hidden students keep their data (name, ID, etc.) saved, but are excluded
+  // from the page count and from the generated PDF entirely.
+  const visibleParsedStudents = useMemo<ParsedStudent[]>(
+    () => parsedStudents.filter((_, i) => !students[i]?.hidden),
+    [parsedStudents, students],
+  );
 
   const addStudent = () => setStudents((prev) => [...prev, { raw: "" }]);
   const updateStudent = (index: number, value: string) => {
@@ -197,6 +205,13 @@ export function useCoverPageForm(): UseCoverPageForm {
   };
   const removeStudent = (index: number) => {
     setStudents((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev));
+  };
+  const toggleStudentHidden = (index: number) => {
+    setStudents((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], hidden: !next[index].hidden };
+      return next;
+    });
   };
 
   const addTeacher = () =>
@@ -240,7 +255,7 @@ export function useCoverPageForm(): UseCoverPageForm {
       courseCode,
       courseTitle,
       submissionDate,
-      parsedStudents,
+      parsedStudents: visibleParsedStudents,
       section,
       semester,
       batch,
@@ -254,8 +269,9 @@ export function useCoverPageForm(): UseCoverPageForm {
 
   const downloadPdf = () => {
     if (!pdfUrl) return;
+    const firstVisible = students.find((s) => !s.hidden) ?? students[0];
     const firstName =
-      parseStudent(students[0]?.raw ?? "", type === "Project").name || "CoverPage";
+      parseStudent(firstVisible?.raw ?? "", type === "Project").name || "CoverPage";
     const safeName = firstName.replace(/\s+/g, "_");
     const a = document.createElement("a");
     a.href = pdfUrl;
@@ -280,6 +296,7 @@ export function useCoverPageForm(): UseCoverPageForm {
       addStudent,
       updateStudent,
       removeStudent,
+      toggleStudentHidden,
     },
     teachers: {
       items: teachers,
@@ -303,6 +320,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     setShowTitleBox,
     reportPlaceholder,
     parsedStudents,
+    visibleStudentCount: visibleParsedStudents.length,
     handleReset,
     generatePdf,
     downloadPdf,
