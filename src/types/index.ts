@@ -14,6 +14,7 @@ export interface Teacher {
 
 export interface Student {
   raw: string;
+  hidden?: boolean;
 }
 
 export interface ParsedStudent {
