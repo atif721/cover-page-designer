@@ -16,6 +16,7 @@ interface Teacher {
 
 interface Student {
   raw: string;
+  hidden?: boolean;
 }
 
 interface Props {
@@ -237,7 +238,9 @@ const PDFPreview = ({
   teachers,
   students,
 }: Props & { students: Student[] }) => {
-  const parsed = students.map((s) => ({ ...parseStudent(s.raw), raw: s.raw }));
+  const parsed = students
+    .filter((s) => !s.hidden)
+    .map((s) => ({ ...parseStudent(s.raw), raw: s.raw }));
 
   return (
     <div className="flex flex-1 flex-col items-start justify-start gap-6 overflow-auto bg-gray-200 p-2 sm:p-6 md:p-10">
