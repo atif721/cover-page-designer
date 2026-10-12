@@ -94,19 +94,19 @@ function PreviewCard({
         {/* Course Details Box */}
         <div className="mb-10 space-y-4 rounded-2xl border-2 border-black p-6 text-lg">
           <div className="flex">
-            <span className="w-40 font-medium">Course Code</span>
+            <span className="w-40 font-bold">Course Code</span>
             <span className="mx-2">:</span>
-            <span className="font-bold uppercase">{courseCode}</span>
+            <span className="uppercase">{courseCode}</span>
           </div>
           <div className="flex">
-            <span className="w-40 font-medium">Course Title</span>
+            <span className="w-40 font-bold">Course Title</span>
             <span className="mx-2">:</span>
-            <span className="font-bold capitalize">{courseTitle}</span>
+            <span className="capitalize">{courseTitle}</span>
           </div>
           <div className="flex">
-            <span className="w-40 font-medium">Submission Date</span>
+            <span className="w-40 font-bold">Submission Date</span>
             <span className="mx-2">:</span>
-            <span className="font-bold">{submissionDate}</span>
+            <span className="">{submissionDate}</span>
           </div>
         </div>
 
@@ -114,8 +114,8 @@ function PreviewCard({
             Hidden for Project type too — per-student project title renders below. */}
         {nameLabel && type !== "Project" && (
           <div className="mb-10 flex min-h-32 w-full flex-col justify-self-center rounded-2xl border-2 border-black text-center">
-            <p className="mt-2 text-lg">{nameLabel}:</p>
-            <p className="text-lg font-bold capitalize">{reportName}</p>
+            <p className="mt-2 text-lg font-bold">{nameLabel}:</p>
+            <p className="text-lg capitalize">{reportName}</p>
           </div>
         )}
 
@@ -145,33 +145,29 @@ function PreviewCard({
             <h3 className="mb-6 text-center text-xl font-bold">Submitted By</h3>
             <div className="space-y-3 text-lg">
               <div className="flex">
-                <span className="w-20">Name</span>
+                <span className="w-20 font-bold">Name</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold uppercase">{studentName}</span>
+                <span className="uppercase">{studentName}</span>
               </div>
               <div className="flex">
-                <span className="w-20">Student ID</span>
+                <span className="w-20 font-bold">Student ID</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold">{studentId}</span>
+                <span className="">{studentId}</span>
               </div>
               <div className="flex">
-                <span className="w-20">Section</span>
+                <span className="w-20 font-bold">Section</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold uppercase">{section}</span>
+                <span className="uppercase">{section}</span>
               </div>
               <div className="flex">
-                <span className="w-20">Semester</span>
+                <span className="w-20 font-bold">Semester</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold">
-                  {renderWithSuffix(Number(semester))}
-                </span>
+                <span className="">{renderWithSuffix(Number(semester))}</span>
               </div>
               <div className="flex">
-                <span className="w-20">Batch</span>
+                <span className="w-20 font-bold">Batch</span>
                 <span className="mx-1">:</span>
-                <span className="font-bold">
-                  {renderWithSuffix(Number(batch))}
-                </span>
+                <span className="">{renderWithSuffix(Number(batch))}</span>
               </div>
             </div>
           </div>
@@ -184,15 +180,15 @@ function PreviewCard({
                 <div key={index} className="space-y-1">
                   <div className="flex">
                     <span className="w-7">{index + 1}.</span>
-                    <span className="w-19">Name</span>
+                    <span className="w-19 font-bold">Name</span>
                     <span className="mr-2">:</span>
-                    <span className="font-bold uppercase">{teacher.name}</span>
+                    <span className="uppercase">{teacher.name}</span>
                   </div>
                   <div className="flex">
                     <span className="w-3"></span>
-                    <span className="w-23">Designation</span>
+                    <span className="w-23 font-bold">Designation</span>
                     <span className="mr-1">:</span>
-                    <span className="font-bold">
+                    <span className="">
                       {teacher.designation}
                       <br />
                       Dept. of CSE, VU
