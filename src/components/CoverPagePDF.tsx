@@ -59,13 +59,6 @@ const s = StyleSheet.create({
   labelWide: { width: 110, fontSize: 14, fontWeight: 700 },
   labelNarrow: { width: 70, fontSize: 14, fontWeight: 700 },
   colon: { marginHorizontal: 4, fontSize: 14 },
-  value: {
-    fontSize: 14,
-    fontFamily: "Times New Roman",
-    fontWeight: 700,
-    textTransform: "uppercase",
-    flex: 1,
-  },
   valuePlain: {
     fontSize: 14,
     fontFamily: "Times New Roman",
@@ -226,13 +219,11 @@ export function CoverPage(props: Props) {
             ["Course Code", courseCode, true],
             ["Course Title", courseTitle, true],
             ["Submission Date", formatDateForDisplay(submissionDate), false],
-          ].map(([label, val, upper]) => (
+          ].map(([label, val]) => (
             <View style={s.row} key={label as string}>
               <Text style={s.labelWide}>{label as string}</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={upper ? s.valuePlain : s.value}>
-                {val as string}
-              </Text>
+              <Text style={s.valuePlain}>{val as string}</Text>
             </View>
           ))}
         </View>
