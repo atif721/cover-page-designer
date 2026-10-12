@@ -150,8 +150,8 @@ function PreviewCard({
                 <span className="uppercase">{studentName}</span>
               </div>
               <div className="flex">
-                <span className="w-20 font-bold">Student ID</span>
-                <span className="mx-1">:</span>
+                <span className="w-22 font-bold">Student ID</span>
+                <span className="mr-1">:</span>
                 <span className="">{studentId}</span>
               </div>
               <div className="flex">
