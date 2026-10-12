@@ -6,7 +6,7 @@ import { renderWithSuffixPDF } from "@/utils/AddSuffix";
 import "@/utils/registerFonts";
 
 const s = StyleSheet.create({
-  page: { padding: 30, fontFamily: "Roboto Condensed", fontWeight: 400 },
+  page: { padding: 30, fontFamily: "Times New Roman", fontWeight: 400 },
   outerBorder: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -24,11 +24,11 @@ const s = StyleSheet.create({
   headerCenter: { flex: 1, alignItems: "center", paddingHorizontal: 12 },
   uniName: {
     fontSize: 26,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
     fontWeight: 700,
     marginBottom: 4,
   },
-  deptName: { fontSize: 17, fontFamily: "Roboto Condensed", fontWeight: 700 },
+  deptName: { fontSize: 16, fontFamily: "Times New Roman", fontWeight: 700 },
   centeredBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -37,7 +37,7 @@ const s = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 24,
   },
-  boxText: { fontSize: 16, fontFamily: "Roboto Condensed", fontWeight: 700 },
+  boxText: { fontSize: 16, fontFamily: "Times New Roman", fontWeight: 700 },
   detailBox: {
     border: "1.5pt solid black",
     borderRadius: 12,
@@ -48,28 +48,35 @@ const s = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 6,
     fontSize: 16,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
   },
   row2: {
     flexDirection: "row",
     marginBottom: 16,
     fontSize: 16,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
   },
-  labelWide: { width: 110, fontSize: 14 },
-  labelNarrow: { width: 60, fontSize: 14 },
+  labelWide: { width: 110, fontSize: 14, fontWeight: 700 },
+  labelNarrow: { width: 70, fontSize: 14, fontWeight: 700 },
   colon: { marginHorizontal: 4, fontSize: 14 },
   value: {
     fontSize: 14,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
     fontWeight: 700,
     textTransform: "uppercase",
     flex: 1,
   },
   valuePlain: {
     fontSize: 14,
-    fontFamily: "Roboto Condensed",
-    fontWeight: 700,
+    fontFamily: "Times New Roman",
+    fontWeight: 300,
+    flex: 1,
+  },
+  valueName: {
+    fontSize: 14,
+    fontFamily: "Times New Roman",
+    fontWeight: 300,
+    textTransform: "uppercase",
     flex: 1,
   },
   experimentBox: {
@@ -81,11 +88,10 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  experimentLabel: { fontSize: 14, marginBottom: 4 },
+  experimentLabel: { fontSize: 14, marginBottom: 4, fontWeight: 700 },
   experimentName: {
     fontSize: 14,
-    fontFamily: "Roboto Condensed",
-    fontWeight: 700,
+    fontFamily: "Times New Roman",
     textTransform: "capitalize",
   },
   splitBox: {
@@ -114,7 +120,7 @@ const s = StyleSheet.create({
   splitRight: { width: "50%", padding: 8, paddingLeft: 4 },
   sectionTitle: {
     fontSize: 14,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
     fontWeight: 700,
     textAlign: "center",
     marginBottom: 25,
@@ -122,14 +128,14 @@ const s = StyleSheet.create({
   teacherBlock: { marginBottom: 20 },
   teacherName: {
     fontSize: 13,
-    fontFamily: "Roboto Condensed",
-    fontWeight: 700,
+    fontFamily: "Times New Roman",
+    fontWeight: 300,
     textTransform: "uppercase",
     flex: 1,
   },
   teacherDesignation: {
     fontSize: 12,
-    fontFamily: "Roboto Condensed",
+    fontFamily: "Times New Roman",
     fontWeight: 700,
     flex: 1,
   },
@@ -224,7 +230,7 @@ export function CoverPage(props: Props) {
             <View style={s.row} key={label as string}>
               <Text style={s.labelWide}>{label as string}</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={upper ? s.value : s.valuePlain}>
+              <Text style={upper ? s.valuePlain : s.value}>
                 {val as string}
               </Text>
             </View>
@@ -257,7 +263,7 @@ export function CoverPage(props: Props) {
             <View style={s.row2}>
               <Text style={s.labelNarrow}>Name</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={s.value}>{studentName}</Text>
+              <Text style={s.valueName}>{studentName}</Text>
             </View>
             <View style={s.row2}>
               <Text style={s.labelNarrow}>Student ID</Text>
@@ -267,7 +273,7 @@ export function CoverPage(props: Props) {
             <View style={s.row2}>
               <Text style={s.labelNarrow}>Section</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={s.value}>{section}</Text>
+              <Text style={s.valuePlain}>{section}</Text>
             </View>
             <View style={s.row2}>
               <Text style={s.labelNarrow}>Semester</Text>
@@ -291,28 +297,41 @@ export function CoverPage(props: Props) {
             {teachers.map((t, i) => (
               <View key={i} style={s.teacherBlock}>
                 <View style={s.row}>
-                  <Text style={{ width: 18, fontSize: 12 }}>{i + 1}.</Text>
-                  <Text style={{ width: 55, fontSize: 12, paddingRight: 5 }}>
+                  <Text style={{ width: 12, fontSize: 11, fontWeight: 700 }}>
+                    {i + 1}.
+                  </Text>
+                  <Text
+                    style={{
+                      width: 55,
+                      fontSize: 11,
+                      paddingRight: 5,
+                      fontWeight: 700,
+                    }}
+                  >
                     Name
                   </Text>
-                  <Text style={s.colon}>:</Text>
+                  <Text style={{ fontSize: 11, marginLeft: 5, marginRight: 5 }}>
+                    :
+                  </Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>
                 <View style={s.row}>
-                  <Text style={{ width: 18, fontSize: 11 }}> </Text>
-                  <Text style={{ width: 55, fontSize: 11 }}>Designation</Text>
-                  <Text style={s.colon}>:</Text>
+                  <Text style={{ width: 12, fontSize: 11 }}> </Text>
+                  <Text style={{ width: 60, fontSize: 11, fontWeight: 700 }}>
+                    Designation
+                  </Text>
+                  <Text style={{ fontSize: 11, marginRight: 5 }}>:</Text>
                   <View>
                     <Text
                       style={{
                         fontSize: 13,
-                        fontFamily: "Roboto Condensed",
-                        fontWeight: 700,
+                        fontFamily: "Times New Roman",
+                        fontWeight: 300,
                       }}
                     >
                       {t.designation}
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: 700 }}>
+                    <Text style={{ fontSize: 12, fontWeight: 300 }}>
                       Dept. of CSE, VU
                     </Text>
                   </View>
