@@ -57,16 +57,22 @@ const s = StyleSheet.create({
     fontFamily: "Times New Roman",
   },
   labelWide: { width: 110, fontSize: 14, fontWeight: 700 },
-  labelNarrow: { width: 60, fontSize: 12, fontWeight: 700 },
-  colon: { marginRight: 2, fontSize: 12 },
+  labelNarrow: { width: 60, fontSize: 13, fontWeight: 700 },
+  colon: { marginLeft: 3, marginRight: 3, fontSize: 12 },
   valuePlain: {
-    fontSize: 12,
+    fontSize: 13,
+    fontFamily: "Times New Roman",
+    fontWeight: 300,
+    flex: 1,
+  },
+  crsDetails: {
+    fontSize: 14,
     fontFamily: "Times New Roman",
     fontWeight: 300,
     flex: 1,
   },
   valueName: {
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: "Times New Roman",
     fontWeight: 300,
     textTransform: "uppercase",
@@ -107,7 +113,7 @@ const s = StyleSheet.create({
   splitLeft: {
     width: "50%",
     borderRight: "1.5pt solid black",
-    padding: 8,
+    padding: 4,
     paddingRight: 4,
   },
   splitRight: { width: "50%", padding: 8, paddingLeft: 4 },
@@ -127,9 +133,9 @@ const s = StyleSheet.create({
     flex: 1,
   },
   teacherDesignation: {
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: "Times New Roman",
-    fontWeight: 700,
+    fontWeight: 300,
     flex: 1,
   },
   signature: {
@@ -223,7 +229,7 @@ export function CoverPage(props: Props) {
             <View style={s.row} key={label as string}>
               <Text style={s.labelWide}>{label as string}</Text>
               <Text style={s.colon}>:</Text>
-              <Text style={s.valuePlain}>{val as string}</Text>
+              <Text style={s.crsDetails}>{val as string}</Text>
             </View>
           ))}
         </View>
@@ -287,42 +293,49 @@ export function CoverPage(props: Props) {
             <Text style={s.sectionTitle}>Submitted To</Text>
             {teachers.map((t, i) => (
               <View key={i} style={s.teacherBlock}>
+                {/* <Text
+                  style={{
+                    width: 12,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    marginBottom: 5,
+                  }}
+                >
+                  {i + 1}.
+                </Text> */}
                 <View style={s.row}>
-                  <Text style={{ width: 12, fontSize: 11, fontWeight: 700 }}>
-                    {i + 1}.
-                  </Text>
                   <Text
                     style={{
-                      width: 55,
-                      fontSize: 11,
+                      width: 65,
+                      fontSize: 13,
                       paddingRight: 5,
                       fontWeight: 700,
                     }}
                   >
                     Name
                   </Text>
-                  <Text style={{ fontSize: 11, marginLeft: 5, marginRight: 5 }}>
+                  <Text style={{ fontSize: 13, marginLeft: 5, marginRight: 5 }}>
                     :
                   </Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>
-                <View style={s.row}>
-                  <Text style={{ width: 12, fontSize: 11 }}> </Text>
-                  <Text style={{ width: 60, fontSize: 11, fontWeight: 700 }}>
+                <View style={{ ...s.row, marginTop: 5 }}>
+                  {/* <Text style={{ width: 12, fontSize: 13 }}> </Text> */}
+                  <Text style={{ width: 70, fontSize: 13, fontWeight: 700 }}>
                     Designation
                   </Text>
-                  <Text style={{ fontSize: 11, marginRight: 5 }}>:</Text>
+                  <Text style={{ fontSize: 13, marginRight: 5 }}>:</Text>
                   <View>
                     <Text
                       style={{
-                        fontSize: 13,
-                        fontFamily: "Times New Roman",
-                        fontWeight: 300,
+                        ...s.teacherDesignation,
                       }}
                     >
                       {t.designation}
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: 300 }}>
+                    <Text
+                      style={{ fontSize: 12, fontWeight: 300, marginTop: 15 }}
+                    >
                       Dept. of CSE, VU
                     </Text>
                   </View>
