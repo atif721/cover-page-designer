@@ -319,7 +319,16 @@ export function CoverPage(props: Props) {
                   </Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>
-                <View style={{ ...s.row, marginTop: 5 }}>
+                <View
+                  style={{
+                    ...s.row,
+                    marginTop:
+                      (t.name ?? "").trim().split(/\s+/).filter(Boolean)
+                        .length >= 4
+                        ? 5
+                        : 0,
+                  }}
+                >
                   {/* <Text style={{ width: 12, fontSize: 13 }}> </Text> */}
                   <Text style={{ width: 75, fontSize: 14, fontWeight: 700 }}>
                     Designation
