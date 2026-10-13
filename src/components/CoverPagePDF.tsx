@@ -60,7 +60,7 @@ const s = StyleSheet.create({
   labelNarrow: { width: 60, fontSize: 13, fontWeight: 700 },
   colon: { marginLeft: 3, marginRight: 3, fontSize: 12 },
   valuePlain: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Times New Roman",
     fontWeight: 300,
     flex: 1,
@@ -72,7 +72,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   valueName: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Times New Roman",
     fontWeight: 300,
     textTransform: "uppercase",
@@ -306,25 +306,25 @@ export function CoverPage(props: Props) {
                 <View style={s.row}>
                   <Text
                     style={{
-                      width: 65,
-                      fontSize: 13,
+                      width: 70,
+                      fontSize: 14,
                       paddingRight: 5,
                       fontWeight: 700,
                     }}
                   >
                     Name
                   </Text>
-                  <Text style={{ fontSize: 13, marginLeft: 5, marginRight: 5 }}>
+                  <Text style={{ fontSize: 14, marginLeft: 5, marginRight: 5 }}>
                     :
                   </Text>
                   <Text style={s.teacherName}>{t.name}</Text>
                 </View>
                 <View style={{ ...s.row, marginTop: 5 }}>
                   {/* <Text style={{ width: 12, fontSize: 13 }}> </Text> */}
-                  <Text style={{ width: 70, fontSize: 13, fontWeight: 700 }}>
+                  <Text style={{ width: 75, fontSize: 14, fontWeight: 700 }}>
                     Designation
                   </Text>
-                  <Text style={{ fontSize: 13, marginRight: 5 }}>:</Text>
+                  <Text style={{ fontSize: 14, marginRight: 5 }}>:</Text>
                   <View>
                     <Text
                       style={{
