@@ -10,6 +10,7 @@ interface CourseFieldsProps {
   courseTitle: string;
   submissionDate: string;
   showTitleBox: boolean;
+
   onToggleTitleBox: (next: boolean) => void;
   setters: {
     setReportName: (next: string) => void;

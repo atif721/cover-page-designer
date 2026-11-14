@@ -24,6 +24,7 @@ interface Props {
   nameLabel: NameLabel;
   reportName: string;
   reportNo: string;
+  department?: string;
   courseCode: string;
   courseTitle: string;
   submissionDate: string;
@@ -57,6 +58,7 @@ function PreviewCard({
   batch,
   teachers,
   projectTitle = "",
+  department = "Dept. Of CSE, VU",
 }: PreviewCardProps) {
   return (
     <div
@@ -191,7 +193,7 @@ function PreviewCard({
                     <span className="">
                       {teacher.designation}
                       <br />
-                      Dept. of CSE, VU
+                      {department}
                     </span>
                   </div>
                 </div>
@@ -225,6 +227,7 @@ const PDFPreview = ({
   nameLabel,
   reportName,
   reportNo,
+  department,
   courseCode,
   courseTitle,
   submissionDate,
@@ -255,6 +258,7 @@ const PDFPreview = ({
               nameLabel={nameLabel}
               reportName={reportName}
               reportNo={reportNo}
+              department={department}
               courseCode={courseCode}
               courseTitle={courseTitle}
               submissionDate={submissionDate}

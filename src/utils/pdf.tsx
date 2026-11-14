@@ -15,6 +15,7 @@ export interface CoverPageBlobInput {
   semester: string;
   batch: string;
   teachers: Teacher[];
+  department?: string;
 }
 
 export async function buildCoverPageBlob(
@@ -29,6 +30,7 @@ export async function buildCoverPageBlob(
           nameLabel={input.nameLabel}
           reportName={input.reportName}
           reportNo={input.reportNo}
+          department={input.department}
           courseCode={input.courseCode}
           courseTitle={input.courseTitle}
           submissionDate={input.submissionDate}

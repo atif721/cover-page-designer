@@ -10,6 +10,7 @@ export type NameLabel =
 export interface Teacher {
   name: string;
   designation: string;
+  department?: string;
 }
 
 export interface Student {
@@ -27,6 +28,7 @@ export interface PersistedState {
   type: ReportType;
   reportName: string;
   reportNo: string;
+  department?: string;
   courseCode: string;
   courseTitle: string;
   submissionDate: string;

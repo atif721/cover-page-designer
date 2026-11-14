@@ -3,6 +3,8 @@ import type { Teacher } from "@/types";
 
 interface TeachersSectionProps {
   teachers: Teacher[];
+  department: string; // add
+  setDepartment: (next: string) => void; // add
   onAdd: () => void;
   onUpdate: (index: number, field: keyof Teacher, value: string) => void;
   onRemove: (index: number) => void;
@@ -10,6 +12,8 @@ interface TeachersSectionProps {
 
 function TeachersSection({
   teachers,
+  department,
+  setDepartment,
   onAdd,
   onUpdate,
   onRemove,
@@ -69,6 +73,18 @@ function TeachersSection({
                   ))}
                 </select>
               </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label className="mt-2 mb-1 block text-sm font-medium text-gray-700">
+                Department
+              </label>
+              <input
+                type="text"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="w-full rounded border border-gray-300 bg-white p-1 text-sm outline-none"
+                placeholder="Dept. of CSE, VU"
+              />
             </div>
           </div>
         ))}

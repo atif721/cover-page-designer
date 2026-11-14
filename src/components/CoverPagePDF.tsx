@@ -177,6 +177,7 @@ interface Props {
   batch: string;
   teachers: Teacher[];
   projectTitle?: string;
+  department?: string;
 }
 
 export function CoverPage(props: Props) {
@@ -195,6 +196,7 @@ export function CoverPage(props: Props) {
     batch,
     teachers,
     projectTitle = "",
+    department = "Dept. Of CSE, VU",
   } = props;
 
   return (
@@ -345,7 +347,7 @@ export function CoverPage(props: Props) {
                     <Text
                       style={{ fontSize: 12, fontWeight: 300, marginTop: 15 }}
                     >
-                      Dept. of CSE, VU
+                      {department}
                     </Text>
                   </View>
                 </View>

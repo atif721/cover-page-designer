@@ -83,7 +83,9 @@ function App() {
           />
 
           <TeachersSection
+            department={f.department}
             teachers={f.teachers.items}
+            setDepartment={f.setDepartment}
             onAdd={f.teachers.addTeacher}
             onUpdate={f.teachers.updateTeacher}
             onRemove={f.teachers.removeTeacher}
@@ -116,6 +118,7 @@ function App() {
           batch={f.batch}
           teachers={f.teachers.items}
           students={f.students.items}
+          department={f.department}
         />
       </div>
     </div>

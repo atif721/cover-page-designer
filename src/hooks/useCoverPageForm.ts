@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { getUrlParams, parseTeachersFromUrl, sortTeachersByDesignation } from "@/utils/urlParams";
+const DEFAULT_DEPARTMENT = "Dept. of CSE, VU";
+import {
+  getUrlParams,
+  parseTeachersFromUrl,
+  sortTeachersByDesignation,
+} from "@/utils/urlParams";
 
 import {
   DEFAULT_TYPE,
@@ -30,7 +35,10 @@ function isPersistedState(value: unknown): value is PersistedState {
 
 function loadInitialState(): PersistedState {
   return (
-    (loadFromStorage(STORAGE_KEY, isPersistedState) as PersistedState | null) ?? {
+    (loadFromStorage(
+      STORAGE_KEY,
+      isPersistedState,
+    ) as PersistedState | null) ?? {
       type: DEFAULT_TYPE,
       reportName: "",
       reportNo: "",
@@ -70,6 +78,8 @@ export interface UseCoverPageForm {
     updateTeacher: (index: number, field: keyof Teacher, value: string) => void;
     removeTeacher: (index: number) => void;
   };
+  department: string;
+  setDepartment: (next: string) => void;
   setType: (next: ReportType) => void;
   setReportName: (next: string) => void;
   setReportNo: (next: string) => void;
@@ -107,7 +117,7 @@ export function useCoverPageForm(): UseCoverPageForm {
   const [teachers, setTeachers] = useState<Teacher[]>(INITIAL_TEACHERS);
   const [showTitleBox, setShowTitleBox] = useState(true);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
+  const [department, setDepartment] = useState(DEFAULT_DEPARTMENT);
   const [hydrated, setHydrated] = useState(false);
   if (!hydrated) {
     const persisted = loadInitialState();
@@ -116,6 +126,8 @@ export function useCoverPageForm(): UseCoverPageForm {
     setType(persisted.type);
     setReportName(persisted.reportName);
     setReportNo(persisted.reportNo);
+
+    setDepartment(persisted.department ?? DEFAULT_DEPARTMENT);
 
     setCourseCode(urlParams.courseCode ?? persisted.courseCode);
     setCourseTitle(urlParams.courseTitle ?? persisted.courseTitle);
@@ -134,7 +146,10 @@ export function useCoverPageForm(): UseCoverPageForm {
     }
 
     if (urlParams.teacher) {
-      const teachers = parseTeachersFromUrl(urlParams.teacher, urlParams.designation);
+      const teachers = parseTeachersFromUrl(
+        urlParams.teacher,
+        urlParams.designation,
+      );
       setTeachers(sortTeachersByDesignation(teachers));
     } else {
       setTeachers(persisted.teachers);
@@ -150,6 +165,7 @@ export function useCoverPageForm(): UseCoverPageForm {
       type,
       reportName,
       reportNo,
+      department,
       courseCode,
       courseTitle,
       submissionDate,
@@ -165,6 +181,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     type,
     reportName,
     reportNo,
+    department,
     courseCode,
     courseTitle,
     submissionDate,
@@ -175,7 +192,6 @@ export function useCoverPageForm(): UseCoverPageForm {
     teachers,
     showTitleBox,
   ]);
-
 
   const isProject = type === "Project";
   const rawNameLabel: NameLabel = NAME_LABEL_FOR_TYPE[type];
@@ -204,7 +220,9 @@ export function useCoverPageForm(): UseCoverPageForm {
     });
   };
   const removeStudent = (index: number) => {
-    setStudents((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev));
+    setStudents((prev) =>
+      prev.length > 1 ? prev.filter((_, i) => i !== index) : prev,
+    );
   };
   const toggleStudentHidden = (index: number) => {
     setStudents((prev) => {
@@ -216,7 +234,11 @@ export function useCoverPageForm(): UseCoverPageForm {
 
   const addTeacher = () =>
     setTeachers((prev) => [...prev, { name: "", designation: "" }]);
-  const updateTeacher = (index: number, field: keyof Teacher, value: string) => {
+  const updateTeacher = (
+    index: number,
+    field: keyof Teacher,
+    value: string,
+  ) => {
     setTeachers((prev) => {
       const next = [...prev];
       next[index] = { ...next[index], [field]: value };
@@ -224,7 +246,9 @@ export function useCoverPageForm(): UseCoverPageForm {
     });
   };
   const removeTeacher = (index: number) => {
-    setTeachers((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev));
+    setTeachers((prev) =>
+      prev.length > 1 ? prev.filter((_, i) => i !== index) : prev,
+    );
   };
 
   const handleReset = () => {
@@ -242,6 +266,7 @@ export function useCoverPageForm(): UseCoverPageForm {
     setBatch("");
     setTeachers(INITIAL_TEACHERS);
     setShowTitleBox(true);
+    setDepartment(DEFAULT_DEPARTMENT);
   };
 
   const generatePdf = async () => {
@@ -252,6 +277,7 @@ export function useCoverPageForm(): UseCoverPageForm {
       nameLabel,
       reportName,
       reportNo,
+      department,
       courseCode,
       courseTitle,
       submissionDate,
@@ -271,7 +297,8 @@ export function useCoverPageForm(): UseCoverPageForm {
     if (!pdfUrl) return;
     const firstVisible = students.find((s) => !s.hidden) ?? students[0];
     const firstName =
-      parseStudent(firstVisible?.raw ?? "", type === "Project").name || "CoverPage";
+      parseStudent(firstVisible?.raw ?? "", type === "Project").name ||
+      "CoverPage";
     const safeName = firstName.replace(/\s+/g, "_");
     const a = document.createElement("a");
     a.href = pdfUrl;
@@ -285,6 +312,8 @@ export function useCoverPageForm(): UseCoverPageForm {
     type,
     reportName,
     reportNo,
+    department,
+    setDepartment,
     courseCode,
     courseTitle,
     submissionDate,
