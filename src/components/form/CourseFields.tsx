@@ -106,11 +106,11 @@ function CourseFields({
             <label className="mb-1 block text-sm font-medium text-gray-700">
               {nameLabel}
             </label>
-            <input
-              type="text"
+            <textarea
               value={reportName}
               onChange={(e) => setters.setReportName(e.target.value)}
-              className="w-full rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
+              rows={4}
+              className="w-full resize-y rounded-md border border-gray-300 bg-white p-2 outline-none focus:ring-2 focus:ring-blue-500"
               placeholder={reportPlaceholder}
             />
           </div>

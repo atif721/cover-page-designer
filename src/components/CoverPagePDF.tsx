@@ -91,6 +91,7 @@ const s = StyleSheet.create({
   experimentName: {
     fontSize: 14,
     fontFamily: "Times New Roman",
+    textAlign: "center",
   },
   splitBox: {
     border: "1.5pt solid black",
