@@ -115,7 +115,7 @@ function PreviewCard({
         {nameLabel && type !== "Project" && (
           <div className="mb-10 flex min-h-32 w-full flex-col justify-self-center rounded-2xl border-2 border-black text-center">
             <p className="mt-2 text-lg font-bold">{nameLabel}:</p>
-            <p className="text-lg capitalize">{reportName}</p>
+            <p className="text-lg">{reportName}</p>
           </div>
         )}
 
@@ -123,7 +123,7 @@ function PreviewCard({
         {type === "Project" && (
           <div className="mb-10 flex min-h-32 flex-col justify-center rounded-2xl border-2 border-black text-center">
             <p className="mt-2 text-lg">Project Title:</p>
-            <p className="text-lg font-bold capitalize">
+            <p className="text-lg font-bold">
               {projectTitle || "—"}
             </p>
           </div>
